@@ -1,0 +1,30 @@
+{
+  "name": "effect-versioned-schema-examples",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": ">=24.12.0"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "demo:schema": "node src/schema.ts",
+    "demo:http": "node src/http/demo.ts",
+    "demo:rpc": "node src/rpc/demo.ts",
+    "demo:cluster": "node src/cluster/demo.ts",
+    "demo": "pnpm demo:schema && pnpm demo:http && pnpm demo:rpc && pnpm demo:cluster",
+    "test": "pnpm check && pnpm demo",
+    "build:snapshot": "node scripts/build-snapshot.mjs",
+    "verify:snapshot": "node scripts/verify-snapshot.mjs"
+  },
+  "dependencies": {
+    "effect": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-ee7ab8096f/effect-4.0.7-versioned.ee7ab8096f.tgz",
+    "@effect/platform-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-ee7ab8096f/effect-platform-node-4.0.7-versioned.ee7ab8096f.tgz",
+    "@effect/sql-sqlite-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-ee7ab8096f/effect-sql-sqlite-node-4.0.7-versioned.ee7ab8096f.tgz"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "@types/node": "26.6.5"
+  }
+}

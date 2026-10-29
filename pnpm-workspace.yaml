@@ -1,0 +1,11 @@
+# The reviewed snapshot also supplies platform-node's transitive packages.
+# URL overrides need this opt-in; the lockfile still verifies artifact integrity.
+blockExoticSubdeps: false
+
+overrides:
+  "effect": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-ee7ab8096f/effect-4.0.7-versioned.ee7ab8096f.tgz"
+  "@effect/platform-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-ee7ab8096f/effect-platform-node-4.0.7-versioned.ee7ab8096f.tgz"
+  "@effect/platform-node-shared": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-ee7ab8096f/effect-platform-node-shared-4.0.7-versioned.ee7ab8096f.tgz"
+  "@effect/sql-sqlite-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-ee7ab8096f/effect-sql-sqlite-node-4.0.7-versioned.ee7ab8096f.tgz"
+
+allowBuilds: {}

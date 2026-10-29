@@ -17,12 +17,12 @@ pnpm test
 
 `pnpm test` typechecks and runs every example. Each example asserts its results, prints what happened, and exits. HTTP listeners and database connections are closed automatically.
 
-| Command | Entry point | Demonstrates |
-| --- | --- | --- |
-| `pnpm demo:schema` | [Schema and storage](src/schema.ts) | Read old records, write current or explicitly selected versions, reject unrepresentable values, adopt unversioned records |
-| `pnpm demo:http` | [HTTP clients and servers](src/http/demo.ts) | Both directions of client/server version skew, explicit retry, the actual JSON wire shape |
-| `pnpm demo:rpc` | [RPC clients and servers](src/rpc/demo.ts) | The same compatibility behavior over RPC, plus a stream ending with `Unrepresentable` |
-| `pnpm demo:cluster` | [Cluster rollout](src/cluster/demo.ts) | A SQLite-backed mailbox waits for an upgraded runner, preserves per-entity order, and answers each caller at its versions |
+| Command             | Entry point                                  | Demonstrates                                                                                                              |
+| ------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm demo:schema`  | [Schema and storage](src/schema.ts)          | Read old records, write current or explicitly selected versions, reject unrepresentable values, adopt unversioned records |
+| `pnpm demo:http`    | [HTTP clients and servers](src/http/demo.ts) | Both directions of client/server version skew, explicit retry, the actual JSON wire shape                                 |
+| `pnpm demo:rpc`     | [RPC clients and servers](src/rpc/demo.ts)   | The same compatibility behavior over RPC, plus a stream ending with `Unrepresentable`                                     |
+| `pnpm demo:cluster` | [Cluster rollout](src/cluster/demo.ts)       | A SQLite-backed mailbox waits for an upgraded runner, preserves per-entity order, and answers each caller at its versions |
 
 ## Start with the schema definitions
 
@@ -43,12 +43,14 @@ const Person = V2.Person.next({
     email: Schema.optionalKey(Schema.String),
     address: V2.Address
   }),
-  migration: (step) => step.addField("email").mapField("status", {
-    up: (status) => status,
-    down: (status) => status === "archived"
-      ? VersionedSchema.unrepresentable("An archived person needs Person v3")
-      : status
-  })
+  migration: (step) =>
+    step.addField("email").mapField("status", {
+      up: (status) => status,
+      down: (status) =>
+        status === "archived"
+          ? VersionedSchema.unrepresentable("An archived person needs Person v3")
+          : status
+    })
 })
 ```
 
@@ -66,21 +68,24 @@ Schema.encodeSync(VersionedSchema.at(Person, { Person: 1, Address: 1 }))(person)
 
 The [HTTP API](src/http/api.ts) and [RPC protocol](src/rpc/protocol.ts) use the versioned schemas directly. No separate wire schema or hand-written negotiation middleware is needed. Generated clients declare the schema versions they speak; handlers receive negotiated `versions`.
 
-| Client → server | Result |
-| --- | --- |
-| v3 → v3 | Current request and response shapes |
-| v1 → v3 | Old payloads upgrade on the server; replies encode for the old client |
-| v3 → v1, response-only read | The server returns a version it knows; the newer client upgrades it |
-| v3 → v1, newer request payload | `VersionUnsupported` before the handler runs |
-| Explicit retry at `error.supported` | Compatible values are downgraded and the request succeeds |
-| Archived person → v1 client | `Unrepresentable`, because the old status type cannot hold the value |
+| Client → server                     | Result                                                                |
+| ----------------------------------- | --------------------------------------------------------------------- |
+| v3 → v3                             | Current request and response shapes                                   |
+| v1 → v3                             | Old payloads upgrade on the server; replies encode for the old client |
+| v3 → v1, response-only read         | The server returns a version it knows; the newer client upgrades it   |
+| v3 → v1, newer request payload      | `VersionUnsupported` before the handler runs                          |
+| Explicit retry at `error.supported` | Compatible values are downgraded and the request succeeds             |
+| Archived person → v1 client         | `Unrepresentable`, because the old status type cannot hold the value  |
 
 The retry is application code, and happens only once:
 
 ```ts
-save.pipe(Effect.catchTag("VersionUnsupported", (error) =>
-  save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported))
-))
+save.pipe(
+  Effect.catchTag(
+    "VersionUnsupported",
+    (error) => save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported))
+  )
+)
 ```
 
 An `Unrepresentable` response can occur **after** a handler has run. It does not mean its side effects were rolled back, so these examples do not retry that failure. Direct schema encoders return `SchemaError`; the transport integrations expose the typed compatibility errors.
@@ -105,7 +110,7 @@ This is a single-process rollout walkthrough with SQL polling and an in-memory r
 
 ## The package pin
 
-[snapshot.json](snapshot.json) records the full source commit, package versions, build tool versions, and SHA-256 checksums. All four Effect packages come from that commit. `pnpm-workspace.yaml` overrides transitive Effect dependencies to the same artifacts, and the committed lockfile records their integrity hashes.
+[snapshot.json](snapshot.json) records the full source commit, package versions, build tool versions, and SHA-256 checksums. All four Effect packages come from that commit. `pnpm-workspace.yaml` overrides transitive Effect dependencies to the same artifacts, and the committed lockfile records their integrity hashes. The workspace explicitly permits the transitive tarball URLs required by these overrides.
 
 ```sh
 pnpm verify:snapshot   # Download the public release artifacts and verify SHA-256
