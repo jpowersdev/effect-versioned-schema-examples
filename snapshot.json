@@ -1,0 +1,35 @@
+{
+  "repository": "https://github.com/jpowersdev/effect",
+  "branch": "feat/versioned-schema-v2",
+  "commit": "ee7ab8096ffe96ef15bb46a33b41899afc66e0b7",
+  "version": "4.0.7-versioned.ee7ab8096f",
+  "release": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-ee7ab8096f",
+  "node": "24.21.0",
+  "pnpm": "11.20.0",
+  "packages": [
+    {
+      "name": "effect",
+      "path": "packages/effect",
+      "file": "effect-4.0.7-versioned.ee7ab8096f.tgz",
+      "sha256": "4bc2fb4116ceaa2ff650aad731fc4b08969457c6baf05a0401d0de15c3d19a80"
+    },
+    {
+      "name": "@effect/platform-node",
+      "path": "packages/platform/node",
+      "file": "effect-platform-node-4.0.7-versioned.ee7ab8096f.tgz",
+      "sha256": "718e8e5ec537502abb28fc902415f29a8e8075563d46aa04cddde0aec8557894"
+    },
+    {
+      "name": "@effect/platform-node-shared",
+      "path": "packages/platform/node-shared",
+      "file": "effect-platform-node-shared-4.0.7-versioned.ee7ab8096f.tgz",
+      "sha256": "48335efc4134df4c87a3ea00a655657a0e7491f3f7d073a27d2d7f6dd389222a"
+    },
+    {
+      "name": "@effect/sql-sqlite-node",
+      "path": "packages/sql/sqlite-node",
+      "file": "effect-sql-sqlite-node-4.0.7-versioned.ee7ab8096f.tgz",
+      "sha256": "9a2040c6107ab2af64eaf10983a12e6e7db0d63d281218bbcb0099eb693c43ec"
+    }
+  ]
+}
