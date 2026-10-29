@@ -3,7 +3,7 @@ import { Context, Effect, Layer } from "effect"
 import { HttpRouter, HttpServer } from "effect/http"
 import { createServer } from "node:http"
 
-// Each demo uses real HTTP on loopback, with an OS-selected port. Its enclosing
+// Compatibility tests use real HTTP on loopback, with an OS-selected port. The enclosing
 // scope closes the listener after the clients finish.
 export const serve = <A, E, R>(routes: Layer.Layer<A, E, R>) =>
   Effect.gen(function*() {

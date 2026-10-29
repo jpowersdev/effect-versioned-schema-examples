@@ -16,9 +16,13 @@ import assert from "node:assert/strict"
 import { mkdtemp, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import * as V1 from "../models/v1.ts"
-import * as V3 from "../models/v3.ts"
-import { PeopleV1, PeopleV3 } from "./entities.ts"
+import { test } from "node:test"
+import { People } from "../src/People.ts"
+import { ClusterPeopleLive } from "../src/People/Cluster.ts"
+import { PersonEntity } from "../src/People/Entity.ts"
+import { ada } from "../src/People/Seed.ts"
+import { PersonEntity as LegacyPersonEntity } from "./fixtures/legacy/Entity.ts"
+import { ada as legacyAda } from "./fixtures/legacy/Seed.ts"
 
 const config = {
   shardsPerGroup: 1,
@@ -45,7 +49,7 @@ const waitUntil = (condition: Effect.Effect<boolean, unknown>) =>
     while (!(yield* condition)) yield* Effect.sleep(20)
   }).pipe(Effect.timeout("10 seconds"))
 
-const demo = Effect.gen(function*() {
+const rollout = Effect.gen(function*() {
   const directory = yield* Effect.acquireRelease(
     Effect.promise(() => mkdtemp(join(tmpdir(), "versioned-cluster-"))),
     (path) => Effect.promise(() => rm(path, { recursive: true, force: true }))
@@ -69,16 +73,15 @@ const demo = Effect.gen(function*() {
   const logger = Logger.layer([Logger.make((event) => {
     if (event.logLevel === "Warn") {
       warnings.push(String(event.message))
-      console.log("Runner:", event.message)
     }
-  })])
+  })], { mergeWithExisting: true })
 
   const oldScope = yield* Effect.acquireRelease(Scope.make(), (scope) => Scope.close(scope, Exit.void))
   const oldRunner = yield* Layer.buildWithScope(
-    PeopleV1.toLayer({
+    LegacyPersonEntity.toLayer({
       Save: ({ payload }) =>
         Effect.sync(() => {
-          handled.push(`v1:${payload.operation}`)
+          handled.push(`v1:${payload.person.name}`)
           return payload.person
         })
     }).pipe(Layer.provideMerge(runtime(false)), Layer.provide(logger)),
@@ -89,19 +92,19 @@ const demo = Effect.gen(function*() {
   const oldSharding = Context.get(oldRunner, Sharding.Sharding)
   const shard = oldSharding.getShardId(EntityId.make("ada"), "default")
   yield* waitUntil(Effect.sync(() => oldSharding.hasShardId(shard)))
-  console.log("Started a v1 runner.")
+  yield* Effect.logInfo("Started a v1 runner.")
 
   // The sending client lives outside the runner scope, as a separate process
   // would. SQL polling carries requests and replies between their runtimes.
-  const current = yield* PeopleV3.client.pipe(Effect.provideContext(clientContext))
-  const old = yield* PeopleV1.client.pipe(Effect.provideContext(clientContext))
-  const first = yield* current("ada").Save({ operation: "first", person: V3.ada }).pipe(
+  const current = yield* PersonEntity.client.pipe(Effect.provideContext(clientContext))
+  const old = yield* LegacyPersonEntity.client.pipe(Effect.provideContext(clientContext))
+  const first = yield* current("ada").Save({ person: ada }).pipe(
     Effect.forkChild({ startImmediately: true })
   )
   yield* waitUntil(Effect.sync(() => warnings.some((message) => message.includes("waits for a runner"))))
   assert.deepEqual(handled.slice(), [])
 
-  const later = yield* old("ada").Save({ operation: "later", person: V1.ada }).pipe(
+  const later = yield* old("ada").Save({ person: { ...legacyAda, name: "Ada Lovelace" } }).pipe(
     Effect.forkChild({ startImmediately: true })
   )
   yield* waitUntil(
@@ -110,34 +113,44 @@ const demo = Effect.gen(function*() {
       (rows) => rows[0].count === 2
     )
   )
-  yield* old("bob").Save({ operation: "bob", person: V1.ada })
-  assert.deepEqual(handled.slice(), ["v1:bob"])
+  yield* old("bob").Save({ person: { ...legacyAda, name: "Bob" } })
+  assert.deepEqual(handled.slice(), ["v1:Bob"])
   assert.equal(first.pollUnsafe(), undefined)
   assert.equal(later.pollUnsafe(), undefined)
-  console.log("Person v3 is waiting; later work for Ada is held; Bob still progresses.")
+  yield* Effect.logInfo("Person v3 is waiting; later work for Ada is held; Bob still progresses.")
 
   yield* Scope.close(oldScope, Exit.void)
-  console.log("Stopped the v1 runner. The requests remain in SQLite.")
+  yield* Effect.logInfo("Stopped the v1 runner. The requests remain in SQLite.")
 
   const newScope = yield* Effect.acquireRelease(Scope.make(), (scope) => Scope.close(scope, Exit.void))
-  yield* Layer.buildWithScope(
-    PeopleV3.toLayer({
-      Save: ({ payload, versions }) =>
-        Effect.sync(() => {
-          handled.push(`v3:${payload.operation}`)
-          console.log("v3 handler:", payload.operation, "reply versions:", versions)
-          return payload.person
-        })
-    }).pipe(Layer.provideMerge(runtime(false)), Layer.provide(logger)),
-    newScope
-  ).pipe(
-    Effect.provideContext(shared)
+  // Use the real entity handlers, observing their People dependency to assert
+  // the order in which the persisted requests reach application code.
+  const peopleContext = yield* Layer.build(People.layer)
+  const people = Context.get(peopleContext, People)
+  const observedPeople = Layer.succeed(
+    People,
+    People.of({
+      ...people,
+      save: Effect.fn(function*(id, person) {
+        handled.push(`v3:${person.fullName}`)
+        return yield* people.save(id, person)
+      })
+    })
   )
-  assert.deepEqual(yield* Fiber.join(first), V3.ada)
-  assert.deepEqual(yield* Fiber.join(later), V1.ada)
-  assert.deepEqual(handled.slice(), ["v1:bob", "v3:first", "v3:later"])
-  console.log("Upgraded runner delivered both requests in order, with each caller's reply shape.")
-  console.log("Cluster rollout example passed.")
+  yield* Layer.buildWithScope(
+    ClusterPeopleLive.pipe(
+      Layer.provide(observedPeople),
+      Layer.provideMerge(runtime(false)),
+      Layer.provide(logger)
+    ),
+    newScope
+  ).pipe(Effect.provideContext(shared))
+  assert.deepEqual(yield* Fiber.join(first), ada)
+  assert.deepEqual(yield* Fiber.join(later), { ...legacyAda, name: "Ada Lovelace" })
+  assert.deepEqual(handled.slice(), ["v1:Bob", "v3:Ada", "v3:Ada Lovelace"])
+  yield* Effect.logInfo("Upgraded runner delivered both requests in order, with each caller's reply shape.")
+  yield* Effect.logInfo("Cluster rollout example passed.")
 })
 
-await Effect.runPromise(demo.pipe(Effect.scoped, Effect.timeout("30 seconds")))
+test("SQLite mailbox preserves order across an incompatible runner upgrade", () =>
+  Effect.runPromise(rollout.pipe(Effect.scoped, Effect.timeout("30 seconds"))))
