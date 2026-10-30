@@ -5,10 +5,11 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { fileURLToPath } from "node:url"
 
+// Builds the packages a pin file records, `snapshot.json` by default.
 const root = fileURLToPath(new URL("../", import.meta.url))
-const pin = JSON.parse(await readFile(new URL("../snapshot.json", import.meta.url), "utf8"))
+const pin = JSON.parse(await readFile(join(root, process.argv[2] ?? "snapshot.json"), "utf8"))
 const checkout = await mkdtemp(join(tmpdir(), "effect-versioned-build-"))
-const artifacts = join(root, ".artifacts")
+const artifacts = join(root, ".artifacts", pin.version)
 await mkdir(artifacts, { recursive: true })
 const run = (command, args, cwd = checkout) => execFileSync(command, args, { cwd, stdio: "inherit" })
 

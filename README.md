@@ -152,8 +152,8 @@ The examples use an **unreleased proposal build** pinned to [`8fa8f7c1b2`](https
 [snapshot.json](snapshot.json) records the source commit, package versions, build tools, and SHA-256 checksums. The packages are hosted in this repository's [development release](https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-8fa8f7c1b2). All five Effect packages come from the same commit. The workspace overrides pin transitive dependencies to those tarballs; the lockfile records their integrity hashes.
 
 ```sh
-pnpm verify:snapshot   # Download the published artifacts and verify SHA-256
-pnpm build:snapshot    # Rebuild from the exact source commit into .artifacts/
+pnpm verify:snapshot   # Download the published artifacts, including the benchmark baseline, and verify SHA-256
+pnpm build:snapshot    # Rebuild from the exact source commit into .artifacts/<version>/
 ```
 
 The rebuild uses a temporary checkout and the fork's locked dependencies and release preparation. It requires Git, pnpm, network access, and disk space for a full Effect build. It does not publish anything or modify the proposal checkout.

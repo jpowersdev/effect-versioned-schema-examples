@@ -20,6 +20,7 @@
     "src/**/*.ts",
     "examples/**/*.ts",
     "test/**/*.ts",
+    "benchmarks/**/*.ts",
     "vitest.config.ts"
   ]
 }

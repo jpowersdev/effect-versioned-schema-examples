@@ -1,0 +1,38 @@
+name: Benchmark
+
+# Started by hand from the Actions tab. The tables appear in the run's summary,
+# and the raw results are attached as an artifact.
+on:
+  workflow_dispatch:
+    inputs:
+      rounds:
+        description: Paired rounds to run
+        default: "10"
+
+permissions: {}
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify:snapshot
+      - shell: bash
+        env:
+          ROUNDS: ${{ inputs.rounds }}
+        run: node benchmarks/run.ts --rounds "$ROUNDS" | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: benchmark-results
+          path: benchmarks/results.json

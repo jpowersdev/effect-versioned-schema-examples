@@ -17,6 +17,7 @@
     "example:onboarding": "node examples/onboarding.ts",
     "example:rpc": "node examples/rpc.ts",
     "example:cluster": "node examples/cluster.ts",
+    "bench": "node benchmarks/run.ts",
     "check": "tsc --noEmit",
     "format": "dprint fmt",
     "lint": "dprint check",
@@ -24,7 +25,7 @@
     "test:http": "vitest run test/Http.test.ts",
     "test:schema": "vitest run test/Schema.test.ts",
     "build:snapshot": "node scripts/build-snapshot.mjs",
-    "verify:snapshot": "node scripts/verify-snapshot.mjs"
+    "verify:snapshot": "node scripts/verify-snapshot.mjs snapshot.json benchmarks/snapshot.json"
   },
   "dependencies": {
     "effect": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz",
@@ -36,6 +37,7 @@
     "typescript": "7.0.2",
     "@types/node": "26.6.5",
     "vitest": "5.0.5",
-    "dprint": "0.63.0"
+    "dprint": "0.63.0",
+    "effect-base": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-c065ed7b2c/effect-4.0.7-base.c065ed7b2c.tgz"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "repository": "https://github.com/Effect-TS/effect",
+  "branch": "main",
+  "commit": "c065ed7b2cd9de19cfd5303114908128a70b309f",
+  "version": "4.0.7-base.c065ed7b2c",
+  "release": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-c065ed7b2c",
+  "node": "24.21.0",
+  "pnpm": "11.20.0",
+  "packages": [
+    {
+      "name": "effect",
+      "path": "packages/effect",
+      "file": "effect-4.0.7-base.c065ed7b2c.tgz",
+      "sha256": "8405d1896269e9bd82562c9fc2de65e81ec03413f8af5059f76ea81c785fadd5"
+    }
+  ]
+}

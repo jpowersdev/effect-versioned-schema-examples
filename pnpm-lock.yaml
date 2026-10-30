@@ -34,6 +34,9 @@ importers:
       dprint:
         specifier: 0.63.0
         version: 0.63.0
+      effect-base:
+        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-c065ed7b2c/effect-4.0.7-base.c065ed7b2c.tgz
+        version: effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-c065ed7b2c/effect-4.0.7-base.c065ed7b2c.tgz
       typescript:
         specifier: 7.0.2
         version: 7.0.2
@@ -493,6 +496,10 @@ packages:
   effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz:
     resolution: {integrity: sha512-F6j7MKY1bok9FqXtLz9/mMVqatP9/nYvOHPfVuDXi/G+VjJTfWwY9OBdQS98UMzMJ9q+x0rtlYDn+zapOO1KJg==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz}
     version: 4.0.7-versioned.8fa8f7c1b2
+
+  effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-c065ed7b2c/effect-4.0.7-base.c065ed7b2c.tgz:
+    resolution: {integrity: sha512-aGvr8iYEFlyafWS2ADxXp1qRL4kl16yWfPml2X//SJ3J/sSojdc6pvEla7+i2otbiHlGnHvZ2ohFv9HMK2n0Kw==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-c065ed7b2c/effect-4.0.7-base.c065ed7b2c.tgz}
+    version: 4.0.7-base.c065ed7b2c
 
   es-module-lexer@2.3.2:
     resolution: {integrity: sha512-poHGpORABojJJucnV9KbOavETW8lBVnphkW77ER5/BQ5Fz7oXSoCNek7IH3vR5nRjdsEz926ibFYX8KtLQmdyw==}
@@ -1036,6 +1043,8 @@ snapshots:
       '@dprint/win32-x64': 0.63.0
 
   effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz: {}
+
+  effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-c065ed7b2c/effect-4.0.7-base.c065ed7b2c.tgz: {}
 
   es-module-lexer@2.3.2: {}
 
