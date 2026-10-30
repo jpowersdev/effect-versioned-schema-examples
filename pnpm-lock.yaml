@@ -5,29 +5,29 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz
-  '@effect/platform-node': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-4.0.7-versioned.be2a7ade81.tgz
-  '@effect/platform-node-shared': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-shared-4.0.7-versioned.be2a7ade81.tgz
-  '@effect/sql-sqlite-node': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz
-  '@effect/vitest': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-vitest-4.0.7-versioned.be2a7ade81.tgz
+  effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz
+  '@effect/platform-node': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz
+  '@effect/platform-node-shared': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-shared-4.0.7-versioned.8fa8f7c1b2.tgz
+  '@effect/sql-sqlite-node': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz
+  '@effect/vitest': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz
 
 importers:
 
   .:
     dependencies:
       '@effect/platform-node':
-        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-4.0.7-versioned.be2a7ade81.tgz
-        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)(redis@6.3.0)
+        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz
+        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)(redis@6.3.0)
       '@effect/sql-sqlite-node':
-        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz
-        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)
+        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz
+        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)
       effect:
-        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz
-        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz
+        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz
+        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz
     devDependencies:
       '@effect/vitest':
-        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-vitest-4.0.7-versioned.be2a7ade81.tgz
-        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-vitest-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)(vitest@5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5)))
+        specifier: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz
+        version: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)(vitest@5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5)))
       '@types/node':
         specifier: 26.6.5
         version: 26.6.5
@@ -40,32 +40,32 @@ importers:
 
 packages:
 
-  '@effect/platform-node-shared@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-shared-4.0.7-versioned.be2a7ade81.tgz':
-    resolution: {integrity: sha512-laoFBE/njo3o2Le2QGcB4ATl7V7Zcn20NtHF54F6OPFc5JWRxA4Bu0REE/7zemadTzsUlAWw3SHNxjq9faAK1g==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-shared-4.0.7-versioned.be2a7ade81.tgz}
-    version: 4.0.7-versioned.be2a7ade81
+  '@effect/platform-node-shared@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-shared-4.0.7-versioned.8fa8f7c1b2.tgz':
+    resolution: {integrity: sha512-Pr8aiYXpC4cjNhUCMKqRE/ZGyoQqMM9uVvyxYa5+AFtxxjKlqgwZ5FQ9tiUcabcrLWv0KXZ/BTsFf1Ai7LVpsA==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-shared-4.0.7-versioned.8fa8f7c1b2.tgz}
+    version: 4.0.7-versioned.8fa8f7c1b2
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      effect: ^4.0.7-versioned.be2a7ade81
+      effect: ^4.0.7-versioned.8fa8f7c1b2
 
-  '@effect/platform-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-4.0.7-versioned.be2a7ade81.tgz':
-    resolution: {integrity: sha512-yV1duccf2JceMSc16x+M1LsPP93P4vsR6uQcJF2MUdsPBwDOHCLpG5Zo4xMsGqmlcj/7ZRAro4D4LFhitQZEzg==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-4.0.7-versioned.be2a7ade81.tgz}
-    version: 4.0.7-versioned.be2a7ade81
+  '@effect/platform-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz':
+    resolution: {integrity: sha512-2xc1A/EEnO5PjpgAsyOIvHWDuayTWgvVUwztLmVax+K06tuZJQ3cGyoTnRYwFAwABR1Z6rhr9LJwXEvceletLg==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz}
+    version: 4.0.7-versioned.8fa8f7c1b2
     engines: {node: '>=18.0.0'}
     peerDependencies:
-      effect: ^4.0.7-versioned.be2a7ade81
+      effect: ^4.0.7-versioned.8fa8f7c1b2
       redis: '>=5.0.0 <7.0.0'
 
-  '@effect/sql-sqlite-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz':
-    resolution: {integrity: sha512-Dxayn9xx1+M5L/Z14LUmd4njfp8vHYq5cB/IB5mKkgLngdsuglYIh4ZVKLG+aLoiC+dnI7ZIvOcsRIKJV82jyg==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz}
-    version: 4.0.7-versioned.be2a7ade81
+  '@effect/sql-sqlite-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz':
+    resolution: {integrity: sha512-t9Y7LHRCIQNESohyfWFXeHCjBaxuHpUpdQ/LHoJDraTPn4yw8b0OR2jBW6r2O+rypfNxSAZn77jCejlEN86niA==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz}
+    version: 4.0.7-versioned.8fa8f7c1b2
     peerDependencies:
-      effect: ^4.0.7-versioned.be2a7ade81
+      effect: ^4.0.7-versioned.8fa8f7c1b2
 
-  '@effect/vitest@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-vitest-4.0.7-versioned.be2a7ade81.tgz':
-    resolution: {integrity: sha512-PT8XofEx885GUPVZDVOjDNIzxyO46vaoaBvDSqrZ1L3N6qQlI6ney/KN9U6AKwtSzCxtOuPTGxSx/l9TZJu5JA==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-vitest-4.0.7-versioned.be2a7ade81.tgz}
-    version: 4.0.7-versioned.be2a7ade81
+  '@effect/vitest@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz':
+    resolution: {integrity: sha512-l9hmedDOn/FXenofnfP/75LO2Vr4mNNWwJTCxZMOnwEtz4c5xNCff08xFRacknFvoEAoY0tZ8Irp5gF6waGdhg==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz}
+    version: 4.0.7-versioned.8fa8f7c1b2
     peerDependencies:
-      effect: ^4.0.7-versioned.be2a7ade81
+      effect: ^4.0.7-versioned.8fa8f7c1b2
       vitest: '>=5.0.0 <6.0.0'
 
   '@jridgewell/resolve-uri@3.1.2':
@@ -377,9 +377,9 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
-  effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz:
-    resolution: {integrity: sha512-IcHA0dkX0rK5NgNjNqohTQKl1Bhgov04TSprFDnZjL7dAc6M79qLYEtMAJfcuzSHqyJxRypR2PSMv2SxqRfQmw==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz}
-    version: 4.0.7-versioned.be2a7ade81
+  effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz:
+    resolution: {integrity: sha512-F6j7MKY1bok9FqXtLz9/mMVqatP9/nYvOHPfVuDXi/G+VjJTfWwY9OBdQS98UMzMJ9q+x0rtlYDn+zapOO1KJg==, tarball: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz}
+    version: 4.0.7-versioned.8fa8f7c1b2
 
   es-module-lexer@2.3.2:
     resolution: {integrity: sha512-poHGpORABojJJucnV9KbOavETW8lBVnphkW77ER5/BQ5Fz7oXSoCNek7IH3vR5nRjdsEz926ibFYX8KtLQmdyw==}
@@ -645,32 +645,32 @@ packages:
 
 snapshots:
 
-  '@effect/platform-node-shared@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-shared-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)':
+  '@effect/platform-node-shared@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-shared-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)':
     dependencies:
       '@types/ws': 8.18.2
-      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz
+      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz
       ws: 8.22.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@effect/platform-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)(redis@6.3.0)':
+  '@effect/platform-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)(redis@6.3.0)':
     dependencies:
-      '@effect/platform-node-shared': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-shared-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)
-      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz
+      '@effect/platform-node-shared': https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-shared-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)
+      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz
       redis: 6.3.0
       undici: 8.12.3
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  '@effect/sql-sqlite-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)':
+  '@effect/sql-sqlite-node@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)':
     dependencies:
-      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz
+      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz
 
-  '@effect/vitest@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-vitest-4.0.7-versioned.be2a7ade81.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz)(vitest@5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5)))':
+  '@effect/vitest@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz(effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz)(vitest@5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5)))':
     dependencies:
-      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz
+      effect: https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz
       vitest: 5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5))
 
   '@jridgewell/resolve-uri@3.1.2': {}
@@ -843,7 +843,7 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
-  effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz: {}
+  effect@https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz: {}
 
   es-module-lexer@2.3.2: {}
 

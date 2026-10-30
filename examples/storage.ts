@@ -13,7 +13,7 @@ Effect.gen(function*() {
 
   // While older readers share the data, write at a version they can read. The
   // fields that version lacks are dropped.
-  const forOlderReaders = VersionedSchema.at(Person, { Person: 1 })
+  const forOlderReaders = VersionedSchema.at(Person, Person.version(1))
   yield* Effect.logInfo("Write for older readers", yield* Schema.encodeEffect(forOlderReaders)(ada))
 
   // Nested schemas have their own histories. Pin each one an older reader
@@ -28,8 +28,12 @@ Effect.gen(function*() {
   })
   const Contact = Schema.Struct({ person: Person, address: Address })
   const contact = { person: ada, address: { street: "1 Main St", city: "London" } }
+  const contactForOlderReaders = VersionedSchema.at(
+    Contact,
+    VersionedSchema.versions(Person.version(1), Address.version(1))
+  )
   yield* Effect.logInfo(
     "Write a contact for older readers",
-    yield* Schema.encodeEffect(VersionedSchema.at(Contact, { Person: 1, Address: 1 }))(contact)
+    yield* Schema.encodeEffect(contactForOlderReaders)(contact)
   )
 }).pipe(NodeRuntime.runMain)

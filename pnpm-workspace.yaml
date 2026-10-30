@@ -3,10 +3,10 @@
 blockExoticSubdeps: false
 
 overrides:
-  "effect": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-4.0.7-versioned.be2a7ade81.tgz"
-  "@effect/platform-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-4.0.7-versioned.be2a7ade81.tgz"
-  "@effect/platform-node-shared": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-platform-node-shared-4.0.7-versioned.be2a7ade81.tgz"
-  "@effect/sql-sqlite-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz"
-  "@effect/vitest": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-be2a7ade81/effect-vitest-4.0.7-versioned.be2a7ade81.tgz"
+  "effect": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-4.0.7-versioned.8fa8f7c1b2.tgz"
+  "@effect/platform-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz"
+  "@effect/platform-node-shared": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-platform-node-shared-4.0.7-versioned.8fa8f7c1b2.tgz"
+  "@effect/sql-sqlite-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz"
+  "@effect/vitest": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz"
 
 allowBuilds: {}

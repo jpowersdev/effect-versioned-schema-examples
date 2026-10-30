@@ -16,17 +16,17 @@ describe("Person", () => {
     Effect.gen(function*() {
       const ada: Person = { fullName: "Ada", status: "active", email: "ada@example.com" }
       assert.deepStrictEqual(yield* Schema.encodeEffect(Person)(ada), { _version: 3, ...ada })
-      assert.deepStrictEqual(yield* Schema.encodeEffect(VersionedSchema.at(Person, { Person: 2 }))(ada), {
+      assert.deepStrictEqual(yield* Schema.encodeEffect(VersionedSchema.at(Person, Person.version(2)))(ada), {
         _version: 2,
         fullName: "Ada",
         status: "active"
       })
-      const v1 = yield* Schema.encodeEffect(VersionedSchema.at(Person, { Person: 1 }))(ada)
+      const v1 = yield* Schema.encodeEffect(VersionedSchema.at(Person, Person.version(1)))(ada)
       assert.deepStrictEqual(yield* Schema.decodeUnknownEffect(Legacy.Person)(v1), { name: "Ada", status: "active" })
     }))
 
   it("fails to write an archived person at v1", () => {
-    const result = Schema.encodeResult(VersionedSchema.at(Person, { Person: 1 }))({
+    const result = Schema.encodeResult(VersionedSchema.at(Person, Person.version(1)))({
       fullName: "Grace",
       status: "archived"
     })

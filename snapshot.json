@@ -1,41 +1,41 @@
 {
   "repository": "https://github.com/jpowersdev/effect",
   "branch": "feat/versioned-schema-v2",
-  "commit": "be2a7ade8191834fcfcb7185dfbde8da15b6657b",
-  "version": "4.0.7-versioned.be2a7ade81",
-  "release": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-be2a7ade81",
+  "commit": "8fa8f7c1b24f89d1924abedd6eec838986186fa2",
+  "version": "4.0.7-versioned.8fa8f7c1b2",
+  "release": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-8fa8f7c1b2",
   "node": "24.21.0",
   "pnpm": "11.20.0",
   "packages": [
     {
       "name": "effect",
       "path": "packages/effect",
-      "file": "effect-4.0.7-versioned.be2a7ade81.tgz",
-      "sha256": "26c2f5034db59434eb822c030d074918ec1b900e6b6eb29a9f5ad47f28186f7f"
+      "file": "effect-4.0.7-versioned.8fa8f7c1b2.tgz",
+      "sha256": "5fe87a295f112be1b1439b83818840d29a043660c20040b340e0c18c6241383a"
     },
     {
       "name": "@effect/platform-node",
       "path": "packages/platform/node",
-      "file": "effect-platform-node-4.0.7-versioned.be2a7ade81.tgz",
-      "sha256": "9f55e50626e43a44a3e379a77585165d5c0553c2c7861dc12e2e0ca524811dff"
+      "file": "effect-platform-node-4.0.7-versioned.8fa8f7c1b2.tgz",
+      "sha256": "1b232e22eeef86e9362e05198dcd4b437e2944374653f7f791cd799508969343"
     },
     {
       "name": "@effect/platform-node-shared",
       "path": "packages/platform/node-shared",
-      "file": "effect-platform-node-shared-4.0.7-versioned.be2a7ade81.tgz",
-      "sha256": "b11f20496f9664f9e57a4fc2c4a1ad648eeea60db9b3cf0f37043a2cc352cba3"
+      "file": "effect-platform-node-shared-4.0.7-versioned.8fa8f7c1b2.tgz",
+      "sha256": "6cfc03b9277ba82aaac431adba642d0cc773611413c1239219182c721cd27305"
     },
     {
       "name": "@effect/sql-sqlite-node",
       "path": "packages/sql/sqlite-node",
-      "file": "effect-sql-sqlite-node-4.0.7-versioned.be2a7ade81.tgz",
-      "sha256": "8fa2d650e613d6d265a4c20139cd3aa55c0bc2f8598f69c24d073adfc74d0b3b"
+      "file": "effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz",
+      "sha256": "a43e665846f4575cee568dcbc16c5ecf455d99ec09ec8af1803a6d0f49befd9b"
     },
     {
       "name": "@effect/vitest",
       "path": "packages/vitest",
-      "file": "effect-vitest-4.0.7-versioned.be2a7ade81.tgz",
-      "sha256": "32ad756a3b23d136f2f99cb214fc76f51242ac655989358ebce4ec130ef48ac4"
+      "file": "effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz",
+      "sha256": "190efd4003b983ecdf8fdd56e28149305567d7e4b2806d81a5bffaf758ccc26d"
     }
   ]
 }

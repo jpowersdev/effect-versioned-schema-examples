@@ -67,7 +67,7 @@ Effect.gen(function*() {
   // Until every installed client sends the header, pin the version requests
   // without it get. Remove the pin afterwards, and they get the latest again.
   const baseUrl = yield* serve(
-    ApiRoutes.pipe(Layer.provide(Layer.succeed(VersionedSchema.DefaultVersions, { Customer: 1 })))
+    ApiRoutes.pipe(Layer.provide(Layer.succeed(VersionedSchema.DefaultVersions, Customer.version(1))))
   )
   const installed = yield* HttpApiClient.make(InstalledApi, { baseUrl })
   yield* Effect.logInfo("Installed client reads, with the pin", yield* installed.customers.get())

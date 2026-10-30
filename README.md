@@ -63,7 +63,7 @@ The application explicitly chooses **one retry**, accepting that `email` will be
 ```ts
 save.pipe(
   Effect.catchTag("VersionUnsupported", (error) =>
-    save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported)))
+    save.pipe(Effect.provideService(VersionedSchema.ClientVersions, error.supported)))
 )
 ```
 
@@ -105,7 +105,7 @@ The other modules follow the domain/API/handler layout of [effect-http-play](htt
 | [src/legacy.ts](src/legacy.ts)           | The previous release: the contract installed clients use, and its server. |
 | [src/main.ts](src/main.ts)               | Runs the scenarios.                                                       |
 
-`legacy.ts` models code already shipped. It imports nothing from the current domain. Using `VersionedSchema.at(Person, { Person: 1 })` instead would only select an older encoding; its decoded type would still be the current Person, so it would not model an old client.
+`legacy.ts` models code already shipped. It imports nothing from the current domain. Using `VersionedSchema.at(Person, Person.version(1))` instead would only select an older encoding; its decoded type would still be the current Person, so it would not model an old client.
 
 Both servers keep a small in-memory store in their handler layer. `PUT` replaces the whole record. Each scenario starts with fresh data.
 
@@ -130,12 +130,12 @@ pnpm test
 
 This typechecks every source file, then runs the tests with [`@effect/vitest`](https://github.com/Effect-TS/effect/tree/main/packages/vitest). They check the HTTP scenarios' logged wire bodies, statuses, handler inputs and retries against the traces above, and run each supporting example, checking that its steps happen in order. Each walkthrough has a timeout so a failure cannot leave it hanging.
 
-The examples use an **unreleased proposal build** pinned to [`be2a7ade81`](https://github.com/jpowersdev/effect/commit/be2a7ade8191834fcfcb7185dfbde8da15b6657b), not an official Effect release.
+The examples use an **unreleased proposal build** pinned to [`8fa8f7c1b2`](https://github.com/jpowersdev/effect/commit/8fa8f7c1b24f89d1924abedd6eec838986186fa2), not an official Effect release.
 
 <details>
 <summary>Package artifacts and rebuilding</summary>
 
-[snapshot.json](snapshot.json) records the source commit, package versions, build tools, and SHA-256 checksums. The packages are hosted in this repository's [development release](https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-be2a7ade81). All five Effect packages come from the same commit. The workspace overrides pin transitive dependencies to those tarballs; the lockfile records their integrity hashes.
+[snapshot.json](snapshot.json) records the source commit, package versions, build tools, and SHA-256 checksums. The packages are hosted in this repository's [development release](https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-8fa8f7c1b2). All five Effect packages come from the same commit. The workspace overrides pin transitive dependencies to those tarballs; the lockfile records their integrity hashes.
 
 ```sh
 pnpm verify:snapshot   # Download the published artifacts and verify SHA-256

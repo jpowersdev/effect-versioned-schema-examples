@@ -69,7 +69,7 @@ Effect.gen(function*() {
   const saved = yield* save.pipe(
     Effect.catchTag("VersionUnsupported", (error) =>
       Effect.logInfo("Old server rejects the write before its handler runs", error.supported).pipe(
-        Effect.andThen(save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported)))
+        Effect.andThen(save.pipe(Effect.provideService(VersionedSchema.ClientVersions, error.supported)))
       ))
   )
   yield* Effect.logInfo("New client receives", saved)
