@@ -63,7 +63,12 @@ New client receives         { fullName: "Ada", status: "active" }
 The application explicitly chooses **one retry**, accepting that `email` will be dropped:
 
 ```ts
-const save = client.people.save({ params: { id: "ada" }, payload: updated })
+const save = client.people.save({
+  params: {
+    id: "ada"
+  },
+  payload: updated
+})
 
 save.pipe(
   Effect.catchTag(

@@ -11,11 +11,17 @@ const PersonV1 = Schema.Struct({
 })
 
 // The previous release only declared v1.
-const PreviousPerson = VersionedSchema.make("Person", { version: 1, payload: PersonV1 })
+const PreviousPerson = VersionedSchema.make("Person", {
+  version: 1,
+  payload: PersonV1
+})
 
 // The current release renamed `name`, added an optional `email`, and added an
 // `archived` status, which v1 can't hold.
-const Person = VersionedSchema.make("Person", { version: 1, payload: PersonV1 }).next({
+const Person = VersionedSchema.make("Person", {
+  version: 1,
+  payload: PersonV1
+}).next({
   version: 2,
   payload: Schema.Struct({
     fullName: Schema.String,
@@ -36,19 +42,46 @@ type Person = typeof Person.Type
 
 // The same RPCs in two releases. Each uses the Person schema it shipped with.
 class PeopleRpcs extends RpcGroup.make(
-  Rpc.make("GetPerson", { success: Person }),
-  Rpc.make("SavePerson", { payload: { person: Person }, success: Person }),
-  Rpc.make("ListPeople", { success: Person, stream: true })
+  Rpc.make("GetPerson", {
+    success: Person
+  }),
+  Rpc.make("SavePerson", {
+    payload: {
+      person: Person
+    },
+    success: Person
+  }),
+  Rpc.make("ListPeople", {
+    success: Person,
+    stream: true
+  })
 ) {}
 
 class PreviousPeopleRpcs extends RpcGroup.make(
-  Rpc.make("GetPerson", { success: PreviousPerson }),
-  Rpc.make("SavePerson", { payload: { person: PreviousPerson }, success: PreviousPerson }),
-  Rpc.make("ListPeople", { success: PreviousPerson, stream: true })
+  Rpc.make("GetPerson", {
+    success: PreviousPerson
+  }),
+  Rpc.make("SavePerson", {
+    payload: {
+      person: PreviousPerson
+    },
+    success: PreviousPerson
+  }),
+  Rpc.make("ListPeople", {
+    success: PreviousPerson,
+    stream: true
+  })
 ) {}
 
-const ada: Person = { fullName: "Ada", status: "active", email: "ada@example.com" }
-const grace: Person = { fullName: "Grace", status: "archived" }
+const ada: Person = {
+  fullName: "Ada",
+  status: "active",
+  email: "ada@example.com"
+}
+const grace: Person = {
+  fullName: "Grace",
+  status: "archived"
+}
 
 const PeopleRpcHandlers = PeopleRpcs.toLayer({
   GetPerson: () => Effect.succeed(ada),
@@ -60,38 +93,66 @@ const PeopleRpcHandlers = PeopleRpcs.toLayer({
 })
 
 const PreviousPeopleRpcHandlers = PreviousPeopleRpcs.toLayer({
-  GetPerson: () => Effect.succeed({ name: "Ada", status: "active" }),
+  GetPerson: () =>
+    Effect.succeed({
+      name: "Ada",
+      status: "active"
+    }),
   SavePerson: Effect.fn(function*({ person }) {
     yield* Effect.logInfo("Old RPC handler receives", person)
     return person
   }),
-  ListPeople: () => Stream.make({ name: "Ada", status: "active" })
+  ListPeople: () =>
+    Stream.make({
+      name: "Ada",
+      status: "active"
+    })
 })
 
 const RpcRoutes = RpcServer.layer(PeopleRpcs).pipe(
   Layer.provide(PeopleRpcHandlers),
-  Layer.provide(RpcServer.layerProtocolHttp({ path: "/rpc" }))
+  Layer.provide(RpcServer.layerProtocolHttp({
+    path: "/rpc"
+  }))
 )
 
 const PreviousRpcRoutes = RpcServer.layer(PreviousPeopleRpcs).pipe(
   Layer.provide(PreviousPeopleRpcHandlers),
-  Layer.provide(RpcServer.layerProtocolHttp({ path: "/rpc" }))
+  Layer.provide(RpcServer.layerProtocolHttp({
+    path: "/rpc"
+  }))
 )
 
 // HTTP servers on free loopback ports. The servers' own request logs are left
 // out.
-const HttpServerLayer = HttpRouter.serve(RpcRoutes, { disableLogger: true, disableListenLog: true }).pipe(
-  Layer.provideMerge(NodeHttpServer.layer(createServer, { host: "127.0.0.1", port: 0 }))
+const HttpServerLayer = HttpRouter.serve(RpcRoutes, {
+  disableLogger: true,
+  disableListenLog: true
+}).pipe(
+  Layer.provideMerge(NodeHttpServer.layer(createServer, {
+    host: "127.0.0.1",
+    port: 0
+  }))
 )
 
-const PreviousHttpServerLayer = HttpRouter.serve(PreviousRpcRoutes, { disableLogger: true, disableListenLog: true })
+const PreviousHttpServerLayer = HttpRouter.serve(PreviousRpcRoutes, {
+  disableLogger: true,
+  disableListenLog: true
+})
   .pipe(
-    Layer.provideMerge(NodeHttpServer.layer(createServer, { host: "127.0.0.1", port: 0 }))
+    Layer.provideMerge(NodeHttpServer.layer(createServer, {
+      host: "127.0.0.1",
+      port: 0
+    }))
   )
 
 // Clients post to the /rpc route of whichever server is provided.
 const RpcClientProtocol = Layer.unwrap(
-  HttpServer.addressFormattedWith((url) => Effect.succeed(RpcClient.layerProtocolHttp({ url: `${url}/rpc` })))
+  HttpServer.addressFormattedWith((url) =>
+    Effect.succeed(RpcClient.layerProtocolHttp({
+      url: `${url}/rpc`
+    }))
+  )
 ).pipe(
   Layer.provide(FetchHttpClient.layer)
 )
@@ -104,7 +165,12 @@ const oldClientNewServer = Effect.gen(function*() {
   yield* Effect.logInfo("Old client reads from the new server", read)
   // => { name: "Ada", status: "active" }
 
-  const saved = yield* client.SavePerson({ person: { name: "Ada", status: "active" } })
+  const saved = yield* client.SavePerson({
+    person: {
+      name: "Ada",
+      status: "active"
+    }
+  })
   // => New RPC handler receives { fullName: "Ada", status: "active" }
 
   yield* Effect.logInfo("Old client saves to the new server", saved)
@@ -116,7 +182,10 @@ const oldClientNewServer = Effect.gen(function*() {
     Stream.runForEach((person) => Effect.logInfo("Old client receives a stream item", person)),
     Effect.catchTag(
       "Unrepresentable",
-      (error) => Effect.logWarning("Stream ends at a person v1 can't hold", { reason: error.reason })
+      (error) =>
+        Effect.logWarning("Stream ends at a person v1 can't hold", {
+          reason: error.reason
+        })
     )
   )
   // => Old client receives a stream item { name: "Ada", status: "active" }
@@ -137,7 +206,9 @@ const newClientOldServer = Effect.gen(function*() {
   yield* Effect.logInfo("New client reads from the old server", read)
   // => { fullName: "Ada", status: "active" }
 
-  const save = client.SavePerson({ person: ada })
+  const save = client.SavePerson({
+    person: ada
+  })
   const saved = yield* save.pipe(
     Effect.catchTag("VersionUnsupported", (error) =>
       Effect.gen(function*() {

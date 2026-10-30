@@ -11,8 +11,14 @@ export const PeopleApiHandlers = HttpApiBuilder.group(
   Effect.fn(function*(handlers) {
     const people = yield* Ref.make<ReadonlyMap<string, Person>>(
       new Map([
-        ["ada", { fullName: "Ada", status: "active" }],
-        ["grace", { fullName: "Grace", status: "archived" }]
+        ["ada", {
+          fullName: "Ada",
+          status: "active"
+        }],
+        ["grace", {
+          fullName: "Grace",
+          status: "archived"
+        }]
       ])
     )
 
@@ -20,7 +26,9 @@ export const PeopleApiHandlers = HttpApiBuilder.group(
       getById: Effect.fn(function*({ params }) {
         const person = (yield* Ref.get(people)).get(params.id)
         if (person === undefined) {
-          return yield* new PersonNotFound({ id: params.id })
+          return yield* new PersonNotFound({
+            id: params.id
+          })
         }
 
         yield* Effect.logInfo("New server returns", person)

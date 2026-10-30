@@ -7,7 +7,9 @@ import { promisify } from "node:util"
 // examples exit with an error if anything fails unexpectedly.
 const run = async (name: string) => {
   const file = fileURLToPath(new URL(`../examples/${name}.ts`, import.meta.url))
-  const { stdout } = await promisify(execFile)(process.execPath, [file], { timeout: 45_000 })
+  const { stdout } = await promisify(execFile)(process.execPath, [file], {
+    timeout: 45_000
+  })
   return stdout
 }
 

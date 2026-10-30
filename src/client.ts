@@ -22,22 +22,35 @@ const trace = (client: HttpClient.HttpClient) =>
     ),
     HttpClient.tap(Effect.fn(function*(response) {
       const body = yield* response.json
-      yield* Effect.logInfo("HTTP response", { status: response.status, body })
+      yield* Effect.logInfo("HTTP response", {
+        status: response.status,
+        body
+      })
     }))
   )
 
 // 1. An old mobile client keeps working after the API has been upgraded.
 export const oldClient = Effect.gen(function*() {
   yield* Effect.logInfo("1. Old client → new server")
-  const client = yield* HttpApiClient.make(Previous.Api, { transformClient: trace })
+  const client = yield* HttpApiClient.make(Previous.Api, {
+    transformClient: trace
+  })
 
-  const person: Previous.Person = { name: "Ada Lovelace", status: "active" }
+  const person: Previous.Person = {
+    name: "Ada Lovelace",
+    status: "active"
+  }
   yield* Effect.logInfo("Old client sends", person)
   // => { name: "Ada Lovelace", status: "active" }
 
   // The new server upgrades the request before its handler runs, and writes the
   // response at the version the client sent.
-  const saved = yield* client.people.save({ params: { id: "ada" }, payload: person })
+  const saved = yield* client.people.save({
+    params: {
+      id: "ada"
+    },
+    payload: person
+  })
   // => HTTP request, Person=1      { _version: 1, name: "Ada Lovelace", status: "active" }
   // => New server handler receives { fullName: "Ada Lovelace", status: "active" }
   // => HTTP response, 200          { _version: 1, name: "Ada Lovelace", status: "active" }
@@ -49,10 +62,16 @@ export const oldClient = Effect.gen(function*() {
 // 2. A newly deployed client reaches an API instance that has not upgraded yet.
 export const oldServer = Effect.gen(function*() {
   yield* Effect.logInfo("2. New client → old server")
-  const client = yield* HttpApiClient.make(Api, { transformClient: trace })
+  const client = yield* HttpApiClient.make(Api, {
+    transformClient: trace
+  })
 
   // The old server answers at v1, and the new client upgrades the response.
-  const person = yield* client.people.getById({ params: { id: "ada" } })
+  const person = yield* client.people.getById({
+    params: {
+      id: "ada"
+    }
+  })
   // => HTTP request, Person=3 (no body)
   // => Old server returns     { name: "Ada", status: "active" }
   // => HTTP response, 200     { _version: 1, name: "Ada", status: "active" }
@@ -60,14 +79,22 @@ export const oldServer = Effect.gen(function*() {
   yield* Effect.logInfo("New client reads", person)
   // => { fullName: "Ada", status: "active" }
 
-  const updated: Person = { ...person, email: "ada@example.com" }
+  const updated: Person = {
+    ...person,
+    email: "ada@example.com"
+  }
   yield* Effect.logInfo("New client writes", updated)
   // => { fullName: "Ada", status: "active", email: "ada@example.com" }
 
   // The old server rejects a v3 write before its handler runs. This application
   // accepts losing email there, so it retries once at the versions the server
   // supports.
-  const save = client.people.save({ params: { id: "ada" }, payload: updated })
+  const save = client.people.save({
+    params: {
+      id: "ada"
+    },
+    payload: updated
+  })
   const saved = yield* save.pipe(
     Effect.catchTag("VersionUnsupported", (error) =>
       Effect.gen(function*() {
@@ -91,15 +118,24 @@ export const oldServer = Effect.gen(function*() {
 // 3. A value the old client's version can't hold fails instead of being changed.
 export const unrepresentable = Effect.gen(function*() {
   yield* Effect.logInfo("3. An archived person → an old client")
-  const client = yield* HttpApiClient.make(Previous.Api, { transformClient: trace })
+  const client = yield* HttpApiClient.make(Previous.Api, {
+    transformClient: trace
+  })
 
   // The new server can't write an archived person at v1, so the call fails with
   // a typed error after its handler has run.
-  yield* client.people.getById({ params: { id: "grace" } }).pipe(
+  yield* client.people.getById({
+    params: {
+      id: "grace"
+    }
+  }).pipe(
     Effect.flatMap((person) => Effect.logInfo("Old client receives", person)),
     Effect.catchTag(
       "Unrepresentable",
-      (error) => Effect.logWarning("Old client can't show this person", { reason: error.reason })
+      (error) =>
+        Effect.logWarning("Old client can't show this person", {
+          reason: error.reason
+        })
     )
   )
   // => HTTP request, Person=1 (no body)

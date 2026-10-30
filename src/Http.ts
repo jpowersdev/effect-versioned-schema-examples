@@ -11,6 +11,9 @@ const ApiRoutes = HttpApiBuilder.layer(Api).pipe(
 
 // An HTTP server on a free port, with an HttpClient that sends requests to it.
 // The server's own request logs are left out.
-export const HttpServerLayer = HttpRouter.serve(ApiRoutes, { disableLogger: true, disableListenLog: true }).pipe(
+export const HttpServerLayer = HttpRouter.serve(ApiRoutes, {
+  disableLogger: true,
+  disableListenLog: true
+}).pipe(
   Layer.provideMerge(NodeHttpServer.layerTest)
 )

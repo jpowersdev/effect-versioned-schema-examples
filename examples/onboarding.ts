@@ -6,12 +6,19 @@ import { VersionedSchema } from "effect/schema"
 
 // The API as it shipped before versioning. Clients built from it send no
 // version header, and its stored records have no `_version`.
-const PreviousCustomer = Schema.Struct({ name: Schema.String })
+const PreviousCustomer = Schema.Struct({
+  name: Schema.String
+})
 
 class PreviousApi extends HttpApi.make("api").add(
   HttpApiGroup.make("customers").add(
-    HttpApiEndpoint.get("get", "/customer", { success: PreviousCustomer }),
-    HttpApiEndpoint.put("save", "/customer", { payload: PreviousCustomer, success: PreviousCustomer })
+    HttpApiEndpoint.get("get", "/customer", {
+      success: PreviousCustomer
+    }),
+    HttpApiEndpoint.put("save", "/customer", {
+      payload: PreviousCustomer,
+      success: PreviousCustomer
+    })
   )
 ) {}
 
@@ -19,18 +26,27 @@ class PreviousApi extends HttpApi.make("api").add(
 // without `_version`, and the rename becomes v2.
 const Customer = VersionedSchema.make("Customer", {
   version: 1,
-  payload: Schema.Struct({ name: Schema.String }),
+  payload: Schema.Struct({
+    name: Schema.String
+  }),
   unversioned: true
 }).next({
   version: 2,
-  payload: Schema.Struct({ fullName: Schema.String }),
+  payload: Schema.Struct({
+    fullName: Schema.String
+  }),
   migration: (step) => step.renameField("name", "fullName")
 })
 
 class Api extends HttpApi.make("api").add(
   HttpApiGroup.make("customers").add(
-    HttpApiEndpoint.get("get", "/customer", { success: Customer }),
-    HttpApiEndpoint.put("save", "/customer", { payload: Customer, success: Customer })
+    HttpApiEndpoint.get("get", "/customer", {
+      success: Customer
+    }),
+    HttpApiEndpoint.put("save", "/customer", {
+      payload: Customer,
+      success: Customer
+    })
   )
 ) {}
 
@@ -39,7 +55,9 @@ const CustomersApiHandlers = HttpApiBuilder.group(
   "customers",
   Effect.fn(function*(handlers) {
     // A record stored before versioning reads as v1, upgraded to the current shape.
-    const stored = { name: "Ada" }
+    const stored = {
+      name: "Ada"
+    }
     const initial = yield* Schema.decodeUnknownEffect(Customer)(stored)
     const customer = yield* Ref.make(initial)
 
@@ -59,7 +77,10 @@ const ApiRoutes = HttpApiBuilder.layer(Api).pipe(
 
 // An HTTP server on a free port, with an HttpClient that sends requests to it.
 // The server's own request logs are left out.
-const HttpServerLayer = HttpRouter.serve(ApiRoutes, { disableLogger: true, disableListenLog: true }).pipe(
+const HttpServerLayer = HttpRouter.serve(ApiRoutes, {
+  disableLogger: true,
+  disableListenLog: true
+}).pipe(
   Layer.provideMerge(NodeHttpServer.layerTest)
 )
 
@@ -91,7 +112,11 @@ const withPin = Effect.gen(function*() {
   // => { name: "Ada" }
 
   // The server upgrades the write, and answers it at v1.
-  const saved = yield* previous.customers.save({ payload: { name: "Ada Lovelace" } })
+  const saved = yield* previous.customers.save({
+    payload: {
+      name: "Ada Lovelace"
+    }
+  })
   // => Server handler receives { fullName: "Ada Lovelace" }
 
   yield* Effect.logInfo("Previous client saves, with the pin", saved)

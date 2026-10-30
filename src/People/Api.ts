@@ -4,12 +4,18 @@ import { Person, PersonNotFound } from "../Domain/Person.ts"
 
 export class PeopleApiGroup extends HttpApiGroup.make("people").add(
   HttpApiEndpoint.get("getById", "/people/:id", {
-    params: { id: Schema.String },
+    params: {
+      id: Schema.String
+    },
     success: Person,
-    error: PersonNotFound.annotate({ httpApiStatus: 404 })
+    error: PersonNotFound.annotate({
+      httpApiStatus: 404
+    })
   }),
   HttpApiEndpoint.put("save", "/people/:id", {
-    params: { id: Schema.String },
+    params: {
+      id: Schema.String
+    },
     payload: Person,
     success: Person
   })

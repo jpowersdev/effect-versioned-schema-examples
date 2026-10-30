@@ -23,12 +23,18 @@ export class PersonNotFound extends Schema.TaggedError<PersonNotFound>()("Person
 
 export class PeopleApiGroup extends HttpApiGroup.make("people").add(
   HttpApiEndpoint.get("getById", "/people/:id", {
-    params: { id: Schema.String },
+    params: {
+      id: Schema.String
+    },
     success: Person,
-    error: PersonNotFound.annotate({ httpApiStatus: 404 })
+    error: PersonNotFound.annotate({
+      httpApiStatus: 404
+    })
   }),
   HttpApiEndpoint.put("save", "/people/:id", {
-    params: { id: Schema.String },
+    params: {
+      id: Schema.String
+    },
     payload: Person,
     success: Person
   })
@@ -41,14 +47,21 @@ const PeopleApiHandlers = HttpApiBuilder.group(
   "people",
   Effect.fn(function*(handlers) {
     const people = yield* Ref.make<ReadonlyMap<string, Person>>(
-      new Map([["ada", { name: "Ada", status: "active" }]])
+      new Map([
+        ["ada", {
+          name: "Ada",
+          status: "active"
+        }]
+      ])
     )
 
     return handlers.handleAll({
       getById: Effect.fn(function*({ params }) {
         const person = (yield* Ref.get(people)).get(params.id)
         if (person === undefined) {
-          return yield* new PersonNotFound({ id: params.id })
+          return yield* new PersonNotFound({
+            id: params.id
+          })
         }
 
         yield* Effect.logInfo("Old server returns", person)
@@ -69,6 +82,9 @@ const ApiRoutes = HttpApiBuilder.layer(Api).pipe(
 
 // An HTTP server on a free port, with an HttpClient that sends requests to it.
 // The server's own request logs are left out.
-export const HttpServerLayer = HttpRouter.serve(ApiRoutes, { disableLogger: true, disableListenLog: true }).pipe(
+export const HttpServerLayer = HttpRouter.serve(ApiRoutes, {
+  disableLogger: true,
+  disableListenLog: true
+}).pipe(
   Layer.provideMerge(NodeHttpServer.layerTest)
 )
