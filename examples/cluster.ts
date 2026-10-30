@@ -1,6 +1,6 @@
 import { NodeCrypto, NodeRuntime } from "@effect/platform-node"
 import { SqliteClient } from "@effect/sql-sqlite-node"
-import { Context, Effect, Exit, Fiber, Layer, Logger, Option, Scope } from "effect"
+import { Context, Effect, Exit, Fiber, Layer, Logger, Option, Schema, Scope } from "effect"
 import {
   ClusterSchema,
   Entity,
@@ -19,19 +19,31 @@ import { SqlClient } from "effect/sql"
 import { mkdtemp, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { Person } from "../src/Domain/Person.ts"
-import * as Legacy from "../src/legacy.ts"
+
+const PersonV1 = Schema.Struct({ name: Schema.String })
+
+// The previous release only declared v1.
+const PreviousPerson = VersionedSchema.make("Person", { version: 1, payload: PersonV1 })
+
+// The current release renamed `name` and added an optional `email`.
+const Person = VersionedSchema.make("Person", { version: 1, payload: PersonV1 }).next({
+  version: 2,
+  payload: Schema.Struct({ fullName: Schema.String, email: Schema.optionalKey(Schema.String) }),
+  migration: (step) => step.renameField("name", "fullName").addField("email")
+})
+
+type Person = typeof Person.Type
 
 // The same persisted entity in two releases.
 const PersonEntity = Entity.make("People", [
   Rpc.make("Save", { payload: { person: Person }, success: Person })
 ]).annotateRpcs(ClusterSchema.Persisted, true)
 
-const LegacyPersonEntity = Entity.make("People", [
-  Rpc.make("Save", { payload: { person: Legacy.Person }, success: Legacy.Person })
+const PreviousPersonEntity = Entity.make("People", [
+  Rpc.make("Save", { payload: { person: PreviousPerson }, success: PreviousPerson })
 ]).annotateRpcs(ClusterSchema.Persisted, true)
 
-const LegacyPersonEntityLayer = LegacyPersonEntity.toLayer({
+const PreviousPersonEntityLayer = PreviousPersonEntity.toLayer({
   Save: Effect.fn(function*({ payload }) {
     yield* Effect.logInfo("Old runner handles", payload.person)
     return payload.person
@@ -141,42 +153,49 @@ Effect.gen(function*() {
     Effect.provideContext(storage)
   )
   const upgraded = yield* PersonEntity.client.pipe(Effect.provideContext(callers))
-  const old = yield* LegacyPersonEntity.client.pipe(Effect.provideContext(callers))
+  const old = yield* PreviousPersonEntity.client.pipe(Effect.provideContext(callers))
 
-  const oldRunner = yield* startRunner(LegacyPersonEntityLayer)
+  const oldRunner = yield* startRunner(PreviousPersonEntityLayer)
   yield* Effect.logInfo("Started a runner from the old release")
 
-  // An upgraded caller sends Person v3, which the old runner can't read. The
+  // An upgraded caller sends Person v2, which the old runner can't read. The
   // message stays in the mailbox until an upgraded runner owns Ada's shard.
-  const ada: Person = { fullName: "Ada", status: "active", email: "ada@example.com" }
+  const ada: Person = { fullName: "Ada", email: "ada@example.com" }
   const upgradedSave = yield* upgraded("ada").Save({ person: ada }).pipe(
     Effect.forkChild({ startImmediately: true })
   )
   yield* waitUntil(Effect.sync(() => warnings.some((message) => message.includes("waits for a runner"))))
+  // => A persisted message waits for a runner that can read Person v2 (this runner reads up to v1)
 
   // An old caller's save for Ada is v1, which the old runner could read, but it
-  // waits behind the v3 message so Ada's requests stay in order.
-  const oldSave = yield* old("ada").Save({ person: { name: "Ada Lovelace", status: "active" } }).pipe(
+  // waits behind the v2 message so Ada's requests stay in order.
+  const oldSave = yield* old("ada").Save({ person: { name: "Ada Lovelace" } }).pipe(
     Effect.forkChild({ startImmediately: true })
   )
   yield* waitUntil(Effect.map(waitingPeople, (people) => people.length === 2))
 
   // Bob has nothing waiting ahead of him, so the old runner handles his save.
-  yield* old("bob").Save({ person: { name: "Bob", status: "active" } })
+  yield* old("bob").Save({ person: { name: "Bob" } })
+  // => Old runner handles { name: "Bob" }
 
   const waiting = yield* waitingPeople
   yield* Effect.logInfo("Waiting in SQLite", waiting)
+  // => ["ada", "ada"]
 
   yield* Scope.close(oldRunner, Exit.void)
   yield* Effect.logInfo("Replacing the old runner with an upgraded one")
   yield* startRunner(PersonEntityLayer)
+  // => Upgraded runner handles { person: { fullName: "Ada", email: "ada@example.com" }, version: 2 }
+  // => Upgraded runner handles { person: { fullName: "Ada Lovelace" }, version: 1 }
 
   // Each caller gets its reply at the version it sent.
   const upgradedReply = yield* Fiber.join(upgradedSave)
   yield* Effect.logInfo("Upgraded caller receives", upgradedReply)
+  // => { fullName: "Ada", email: "ada@example.com" }
 
   const oldReply = yield* Fiber.join(oldSave)
   yield* Effect.logInfo("Old caller receives", oldReply)
+  // => { name: "Ada Lovelace" }
 }).pipe(
   Effect.scoped,
   Effect.timeout("30 seconds"),

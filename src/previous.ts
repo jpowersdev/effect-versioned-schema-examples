@@ -1,10 +1,12 @@
+import { NodeHttpServer } from "@effect/platform-node"
 import { Effect, Layer, Ref, Schema } from "effect"
+import { HttpRouter } from "effect/http"
 import { HttpApi, HttpApiBuilder, HttpApiEndpoint, HttpApiGroup } from "effect/http-api"
 import { VersionedSchema } from "effect/schema"
 
-// The previous release, frozen: the contract its installed clients still use,
-// and the server some instances still run. Nothing here imports the current
-// domain, because the old release cannot know about versions it never shipped.
+// The previous release, frozen: the contract its clients still use, and the
+// server some instances still run. Nothing here imports the current domain,
+// because the previous release can't know about versions it never shipped.
 export const Person = VersionedSchema.make("Person", {
   version: 1,
   payload: Schema.Struct({
@@ -61,6 +63,12 @@ const PeopleApiHandlers = HttpApiBuilder.group(
   })
 )
 
-export const ApiRoutes = HttpApiBuilder.layer(Api).pipe(
+const ApiRoutes = HttpApiBuilder.layer(Api).pipe(
   Layer.provide(PeopleApiHandlers)
+)
+
+// An HTTP server on a free port, with an HttpClient that sends requests to it.
+// The server's own request logs are left out.
+export const HttpServerLayer = HttpRouter.serve(ApiRoutes, { disableLogger: true, disableListenLog: true }).pipe(
+  Layer.provideMerge(NodeHttpServer.layerTest)
 )

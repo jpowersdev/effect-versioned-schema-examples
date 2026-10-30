@@ -1,12 +1,11 @@
-import { assert, layer } from "@effect/vitest"
+import { assert, describe, it } from "@effect/vitest"
 import { Effect, Logger } from "effect"
-import { FetchHttpClient } from "effect/http"
 import { HttpApiClient } from "effect/http-api"
 import { oldClient, oldServer, unrepresentable } from "../src/client.ts"
 import { type Person, PersonNotFound } from "../src/Domain/Person.ts"
-import { ApiRoutes, serve } from "../src/Http.ts"
-import * as Legacy from "../src/legacy.ts"
+import { HttpServerLayer } from "../src/Http.ts"
 import { Api } from "../src/People/Api.ts"
+import * as Previous from "../src/previous.ts"
 
 // Runs a scenario with its logs captured. Returns a lookup from a log label to
 // the values logged with it, in order.
@@ -24,10 +23,10 @@ const captureLogs = <E, R>(scenario: Effect.Effect<void, E, R>) =>
     return (label: string) => messages.filter((message) => message[0] === label).map((message) => message[1])
   })
 
-layer(FetchHttpClient.layer)("HTTP scenarios", (it) => {
+describe("HTTP scenarios", () => {
   it.effect("an old client keeps its shape while the new handler sees the current one", () =>
     Effect.gen(function*() {
-      const logged = yield* captureLogs(Effect.flatMap(serve(ApiRoutes), oldClient))
+      const logged = yield* captureLogs(oldClient.pipe(Effect.provide(HttpServerLayer)))
       const wire = { _version: 1, name: "Ada Lovelace", status: "active" }
 
       assert.deepStrictEqual(logged("HTTP request"), [{ method: "PUT", versions: "Person=1", body: wire }])
@@ -38,7 +37,7 @@ layer(FetchHttpClient.layer)("HTTP scenarios", (it) => {
 
   it.effect("a new client reads from an old server and retries a rejected write once", () =>
     Effect.gen(function*() {
-      const logged = yield* captureLogs(Effect.flatMap(serve(Legacy.ApiRoutes), oldServer))
+      const logged = yield* captureLogs(oldServer.pipe(Effect.provide(Previous.HttpServerLayer)))
       const wire = { _version: 1, name: "Ada", status: "active" }
 
       assert.deepStrictEqual(logged("HTTP request"), [
@@ -66,7 +65,7 @@ layer(FetchHttpClient.layer)("HTTP scenarios", (it) => {
 
   it.effect("an archived person fails for an old client with a typed 406", () =>
     Effect.gen(function*() {
-      const logged = yield* captureLogs(Effect.flatMap(serve(ApiRoutes), unrepresentable))
+      const logged = yield* captureLogs(unrepresentable.pipe(Effect.provide(HttpServerLayer)))
       assert.deepStrictEqual(logged("New server returns"), [{ fullName: "Grace", status: "archived" }])
 
       const [{ reason }] = logged("Old client can't show this person") as [{ reason: string }]
@@ -80,8 +79,7 @@ layer(FetchHttpClient.layer)("HTTP scenarios", (it) => {
 
   it.effect("current clients keep every field, and missing people stay domain errors", () =>
     Effect.gen(function*() {
-      const baseUrl = yield* serve(ApiRoutes)
-      const client = yield* HttpApiClient.make(Api, { baseUrl })
+      const client = yield* HttpApiClient.make(Api)
 
       const ada: Person = { fullName: "Ada", status: "active", email: "ada@example.com" }
       const saved = yield* client.people.save({ params: { id: "ada" }, payload: ada })
@@ -92,5 +90,5 @@ layer(FetchHttpClient.layer)("HTTP scenarios", (it) => {
 
       const missing = yield* client.people.getById({ params: { id: "missing" } }).pipe(Effect.flip)
       assert.instanceOf(missing, PersonNotFound)
-    }))
+    }).pipe(Effect.provide(HttpServerLayer)))
 })

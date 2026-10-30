@@ -95,7 +95,7 @@ An unrepresentable response can fail **after** a handler has run. It does not ro
 
 ## Read the implementation
 
-All three client scenarios are together in **[src/client.ts](src/client.ts)**. The complete Person history is in **[src/Domain/Person.ts](src/Domain/Person.ts)**:
+All three client scenarios are together in **[src/client.ts](src/client.ts)**, with comments showing what each step logs. The complete Person history is in **[src/Domain/Person.ts](src/Domain/Person.ts)**:
 
 - v1: `name` and `status`.
 - v2: rename `name` to `fullName` with `renameField`.
@@ -103,28 +103,28 @@ All three client scenarios are together in **[src/client.ts](src/client.ts)**. T
 
 The other modules follow the domain/API/handler layout of [effect-http-play](https://github.com/tim-smart/effect-http-play), with v4 APIs:
 
-| Module                                   | Contents                                                                  |
-| ---------------------------------------- | ------------------------------------------------------------------------- |
-| [src/People/Api.ts](src/People/Api.ts)   | The API contract. Clients import it without the server.                   |
-| [src/People/Http.ts](src/People/Http.ts) | The handlers, which only see the current Person.                          |
-| [src/Http.ts](src/Http.ts)               | The routes, and a helper that serves them on a free loopback port.        |
-| [src/legacy.ts](src/legacy.ts)           | The previous release: the contract installed clients use, and its server. |
-| [src/main.ts](src/main.ts)               | Runs the scenarios.                                                       |
+| Module                                   | Contents                                                               |
+| ---------------------------------------- | ---------------------------------------------------------------------- |
+| [src/People/Api.ts](src/People/Api.ts)   | The API contract. Clients import it without the server.                |
+| [src/People/Http.ts](src/People/Http.ts) | The handlers, which only see the current Person.                       |
+| [src/Http.ts](src/Http.ts)               | The server: the routes on a free port, with a client that sends to it. |
+| [src/previous.ts](src/previous.ts)       | The previous release: the contract its clients use, and its server.    |
+| [src/main.ts](src/main.ts)               | Runs the scenarios.                                                    |
 
-`legacy.ts` models code already shipped. It imports nothing from the current domain. Using `VersionedSchema.at(Person, Person.version(1))` instead would only select an older encoding; its decoded type would still be the current Person, so it would not model an old client.
+`previous.ts` models code already shipped. It imports nothing from the current domain. Using `VersionedSchema.at(Person, Person.version(1))` instead would only select an older encoding; its decoded type would still be the current Person, so it would not model an old client.
 
 Both servers keep a small in-memory store in their handler layer. `PUT` replaces the whole record. Each scenario starts with fresh data.
 
 ## Supporting cases
 
-Each supporting example is contained in one file and runs independently:
+Each supporting example is one self-contained file that declares its own schemas and servers, with comments showing what each step logs:
 
-| Command                   | What it demonstrates                                                                                                                                                                                                                                                                                      |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm example:onboarding` | [Adopting versioning](examples/onboarding.ts): records and installed clients from before versioning. Those clients send no version header, so they get the latest version unless the server pins older ones with `VersionedSchema.DefaultVersions`. The pin comes out once every client sends the header. |
-| `pnpm example:rpc`        | [RPC compatibility](examples/rpc.ts): the same deployment mismatch and explicit retry, plus a stream that delivers Ada before failing at Grace's archived status.                                                                                                                                         |
-| `pnpm example:cluster`    | [Queued work during a rollout](examples/cluster.ts): a SQLite mailbox waits for an upgraded runner, holds later work for Ada in order, lets Bob progress, and replies at each caller's version. The handler reads the version each caller sent with `VersionedSchema.requestVersion(Person)`.             |
-| `pnpm example:storage`    | [Stored data](examples/storage.ts): read old records, choose write versions, and version nested schemas independently.                                                                                                                                                                                    |
+| Command                   | What it demonstrates                                                                                                                                                                                                                                                                            |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm example:onboarding` | [Adopting versioning](examples/onboarding.ts): records and clients from before versioning. Those clients send no version header, so they get the latest version unless the server pins older ones with `VersionedSchema.DefaultVersions`. The pin comes out once every client sends the header. |
+| `pnpm example:rpc`        | [RPC compatibility](examples/rpc.ts): the same deployment mismatch and explicit retry, plus a stream that delivers Ada before failing at Grace's archived status.                                                                                                                               |
+| `pnpm example:cluster`    | [Queued work during a rollout](examples/cluster.ts): a SQLite mailbox waits for an upgraded runner, holds later work for Ada in order, lets Bob progress, and replies at each caller's version. The handler reads the version each caller sent with `VersionedSchema.requestVersion(Person)`.   |
+| `pnpm example:storage`    | [Stored data](examples/storage.ts): read old records, choose write versions, and version nested schemas independently.                                                                                                                                                                          |
 
 The cluster walkthrough uses a temporary SQLite file, SQL polling, and an in-memory runner lock store. It demonstrates persistence across runner replacement within one process; it does not simulate multi-host coordination or a process crash. It leaves `unknownVersionTimeout` out, so messages wait without a limit. The temporary database is removed afterward.
 

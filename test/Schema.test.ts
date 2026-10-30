@@ -2,7 +2,7 @@ import { assert, describe, it } from "@effect/vitest"
 import { Effect, Result, Schema } from "effect"
 import { VersionedSchema } from "effect/schema"
 import { Person } from "../src/Domain/Person.ts"
-import * as Legacy from "../src/legacy.ts"
+import * as Previous from "../src/previous.ts"
 
 const PersonAtV1 = VersionedSchema.at(Person, Person.version(1))
 const PersonAtV2 = VersionedSchema.at(Person, Person.version(2))
@@ -10,7 +10,7 @@ const PersonAtV2 = VersionedSchema.at(Person, Person.version(2))
 describe("Person", () => {
   it.effect("reads records the previous release wrote", () =>
     Effect.gen(function*() {
-      const record = yield* Schema.encodeEffect(Legacy.Person)({ name: "Ada", status: "active" })
+      const record = yield* Schema.encodeEffect(Previous.Person)({ name: "Ada", status: "active" })
       assert.deepStrictEqual(record, { _version: 1, name: "Ada", status: "active" })
 
       const person = yield* Schema.decodeUnknownEffect(Person)(record)
@@ -29,8 +29,8 @@ describe("Person", () => {
 
       // The previous release reads what was written at v1
       const v1 = yield* Schema.encodeEffect(PersonAtV1)(ada)
-      const legacy = yield* Schema.decodeUnknownEffect(Legacy.Person)(v1)
-      assert.deepStrictEqual(legacy, { name: "Ada", status: "active" })
+      const previous = yield* Schema.decodeUnknownEffect(Previous.Person)(v1)
+      assert.deepStrictEqual(previous, { name: "Ada", status: "active" })
     }))
 
   it("fails to write an archived person at v1", () => {

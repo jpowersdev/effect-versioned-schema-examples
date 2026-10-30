@@ -32,11 +32,11 @@ describe("supporting examples", () => {
     assertInOrder(
       output,
       "New RPC handler receives",
+      "Old client receives a stream item",
+      "Stream ends at a person v1 can't hold",
       "Old server rejects the write before its handler runs",
       "Old RPC handler receives",
-      "New client receives",
-      "Old client receives a stream item",
-      "Stream ends at a person v1 can't hold"
+      "New client receives"
     )
   })
 
@@ -44,10 +44,10 @@ describe("supporting examples", () => {
     const output = await run("onboarding")
     assertInOrder(
       output,
-      "Installed client can't read the latest version",
-      "Installed client reads, with the pin",
+      "Previous client can't read the latest version",
+      "Previous client reads, with the pin",
       "Server handler receives",
-      "Installed client saves, with the pin",
+      "Previous client saves, with the pin",
       "Current client reads"
     )
   })
