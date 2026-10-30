@@ -14,12 +14,7 @@ export const Person = VersionedSchema.make("Person", {
     fullName: Schema.String,
     status: Schema.Literals(["active", "suspended"])
   }),
-  // An explicit migration; step.renameField("name", "fullName") does the same.
-  migration: (step) =>
-    step.custom({
-      up: ({ name, ...rest }) => ({ ...rest, fullName: name }),
-      down: ({ fullName, ...rest }) => ({ ...rest, name: fullName })
-    })
+  migration: (step) => step.renameField("name", "fullName")
 }).next({
   version: 3,
   payload: Schema.Struct({

@@ -6,8 +6,8 @@ import type { Person } from "./Domain/Person.ts"
 import { Api as LegacyApi, type Person as LegacyPerson } from "./legacy.ts"
 import { Api } from "./People/Api.ts"
 
-// Observe the generated client's actual HTTP exchanges. This does not change
-// requests or add retries; the version headers and bodies come from HttpApi.
+// Logs the generated client's HTTP exchanges without changing them. The version
+// headers and bodies come from HttpApi.
 const trace = (client: HttpClient.HttpClient) =>
   client.pipe(
     HttpClient.tapRequest((request) =>
@@ -24,50 +24,44 @@ const trace = (client: HttpClient.HttpClient) =>
     }))
   )
 
-// 1. An old mobile client keeps working after the API has been upgraded.
-export const oldClient = Effect.fn(function*(baseUrl: string) {
+// 1. An installed mobile client keeps working after the API has been upgraded.
+export const oldClient = Effect.fn("oldClient")(function*(baseUrl: string) {
   yield* Effect.logInfo("1. Old client → new server")
   const client = yield* HttpApiClient.make(LegacyApi, { baseUrl, transformClient: trace })
-  const sent: LegacyPerson = { name: "Ada Lovelace", status: "active" }
-  yield* Effect.logInfo("Old client sends", sent)
-  const received = yield* client.people.save({ params: { id: "ada" }, payload: sent })
-  yield* Effect.logInfo("Old client receives", received)
-  yield* Effect.logInfo("The server used fullName; the old client still uses name.")
-  return { sent, received }
+  const person: LegacyPerson = { name: "Ada Lovelace", status: "active" }
+  yield* Effect.logInfo("Old client sends", person)
+  const saved = yield* client.people.save({ params: { id: "ada" }, payload: person })
+  yield* Effect.logInfo("Old client receives", saved)
 })
 
 // 2. A newly deployed client reaches an API instance that has not upgraded yet.
-export const oldServer = Effect.fn(function*(baseUrl: string) {
+export const oldServer = Effect.fn("oldServer")(function*(baseUrl: string) {
   yield* Effect.logInfo("2. New client → old server")
   const client = yield* HttpApiClient.make(Api, { baseUrl, transformClient: trace })
-  const read = yield* client.people.getById({ params: { id: "ada" } })
-  yield* Effect.logInfo("New client upgrades the old response locally", read)
+  const person = yield* client.people.getById({ params: { id: "ada" } })
+  yield* Effect.logInfo("New client reads", person)
 
-  const sent: Person = { ...read, email: "ada@example.com" }
-  yield* Effect.logInfo("New client attempts to write", sent)
-  const save = client.people.save({ params: { id: "ada" }, payload: sent })
-  let unsupported: VersionedSchema.VersionUnsupported | undefined
-  const received = yield* save.pipe(Effect.catchTag(
-    "VersionUnsupported",
-    Effect.fn(function*(error) {
-      unsupported = error
-      yield* Effect.logInfo("Rejected before the handler: VersionUnsupported", error.supported)
-      yield* Effect.logInfo("Application chooses one retry at the server's versions; email will be dropped.")
-      return yield* save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported))
-    })
-  ))
-  if (unsupported === undefined) return yield* Effect.die("Expected the old server to reject the newer write")
-  yield* Effect.logInfo("New client receives the compatible reply", received)
-  return { read, sent, unsupported, received }
+  const updated: Person = { ...person, email: "ada@example.com" }
+  yield* Effect.logInfo("New client writes", updated)
+  const save = client.people.save({ params: { id: "ada" }, payload: updated })
+  // This application accepts losing email on an old server, so it retries once
+  // at the versions that server supports. The rejection came before its handler ran.
+  const saved = yield* save.pipe(
+    Effect.catchTag("VersionUnsupported", (error) =>
+      Effect.logInfo("Old server rejects the write before its handler runs", error.supported).pipe(
+        Effect.andThen(save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported)))
+      ))
+  )
+  yield* Effect.logInfo("New client receives", saved)
 })
 
-// 3. Some changes cannot be translated without inventing a different meaning.
-export const unrepresentable = Effect.fn(function*(baseUrl: string) {
+// 3. A value the old client's version can't hold fails instead of being changed.
+export const unrepresentable = Effect.fn("unrepresentable")(function*(baseUrl: string) {
   yield* Effect.logInfo("3. An archived person → an old client")
   const client = yield* HttpApiClient.make(LegacyApi, { baseUrl, transformClient: trace })
-  const failure = yield* Effect.flip(client.people.getById({ params: { id: "grace" } }))
-  if (!(failure instanceof VersionedSchema.Unrepresentable)) return yield* Effect.fail(failure)
-  yield* Effect.logInfo("Old client receives a typed Unrepresentable failure", { reason: failure.reason })
-  yield* Effect.logInfo("No fallback status is invented, and the request is not retried.")
-  return failure
+  yield* client.people.getById({ params: { id: "grace" } }).pipe(
+    Effect.flatMap((person) => Effect.logInfo("Old client receives", person)),
+    Effect.catchTag("Unrepresentable", (error) =>
+      Effect.logWarning("Old client can't show this person", { reason: error.reason }))
+  )
 })

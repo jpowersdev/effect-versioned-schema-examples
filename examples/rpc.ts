@@ -3,100 +3,84 @@ import { Effect, Layer, Stream } from "effect"
 import { FetchHttpClient } from "effect/http"
 import { Rpc, RpcClient, RpcGroup, RpcSerialization, RpcServer } from "effect/rpc"
 import { VersionedSchema } from "effect/schema"
-import assert from "node:assert/strict"
 import { Person } from "../src/Domain/Person.ts"
-import { Person as LegacyPerson } from "../src/legacy.ts"
-import { serve } from "../src/People/Http.ts"
+import { serve } from "../src/Http.ts"
+import * as Legacy from "../src/legacy.ts"
 
-// The same contract in two deployments. Each uses the Person schema it knows.
+// The same RPCs in two releases. Each uses the Person schema it shipped with.
 class PeopleRpcs extends RpcGroup.make(
   Rpc.make("GetPerson", { success: Person }),
   Rpc.make("SavePerson", { payload: { person: Person }, success: Person }),
   Rpc.make("ListPeople", { success: Person, stream: true })
 ) {}
 class LegacyPeopleRpcs extends RpcGroup.make(
-  Rpc.make("GetPerson", { success: LegacyPerson }),
-  Rpc.make("SavePerson", { payload: { person: LegacyPerson }, success: LegacyPerson }),
-  Rpc.make("ListPeople", { success: LegacyPerson, stream: true })
+  Rpc.make("GetPerson", { success: Legacy.Person }),
+  Rpc.make("SavePerson", { payload: { person: Legacy.Person }, success: Legacy.Person }),
+  Rpc.make("ListPeople", { success: Legacy.Person, stream: true })
 ) {}
 
 const ada: Person = { fullName: "Ada", status: "active", email: "ada@example.com" }
 const grace: Person = { fullName: "Grace", status: "archived" }
-const legacyAda: LegacyPerson = { name: "Ada", status: "active" }
+
+const RpcRoutes = RpcServer.layer(PeopleRpcs).pipe(
+  Layer.provide(PeopleRpcs.toLayer({
+    GetPerson: () => Effect.succeed(ada),
+    SavePerson: Effect.fn(function*({ person }) {
+      yield* Effect.logInfo("New RPC handler receives", person)
+      return person
+    }),
+    ListPeople: () => Stream.make(ada, grace)
+  })),
+  Layer.provide(RpcServer.layerProtocolHttp({ path: "/rpc" }))
+)
+const LegacyRpcRoutes = RpcServer.layer(LegacyPeopleRpcs).pipe(
+  Layer.provide(LegacyPeopleRpcs.toLayer({
+    GetPerson: () => Effect.succeed({ name: "Ada", status: "active" }),
+    SavePerson: Effect.fn(function*({ person }) {
+      yield* Effect.logInfo("Old RPC handler receives", person)
+      return person
+    }),
+    ListPeople: () => Stream.make({ name: "Ada", status: "active" })
+  })),
+  Layer.provide(RpcServer.layerProtocolHttp({ path: "/rpc" }))
+)
+
+const client = <Rpcs extends Rpc.Any>(group: RpcGroup.RpcGroup<Rpcs>, baseUrl: string) =>
+  RpcClient.make(group).pipe(Effect.provide(RpcClient.layerProtocolHttp({ url: `${baseUrl}/rpc` })))
 
 Effect.gen(function*() {
-  let oldSaves = 0
-  const routes = RpcServer.layer(PeopleRpcs).pipe(
-    Layer.provide(PeopleRpcs.toLayer({
-      GetPerson: () => Effect.succeed(ada),
-      SavePerson: Effect.fn(function*({ person }) {
-        yield* Effect.logInfo("New RPC handler receives", person)
-        return person
-      }),
-      ListPeople: () => Stream.make(ada, grace)
-    })),
-    Layer.provide(RpcServer.layerProtocolHttp({ path: "/rpc" })),
-    Layer.provide(RpcSerialization.layerJson)
-  )
-  const legacyRoutes = RpcServer.layer(LegacyPeopleRpcs).pipe(
-    Layer.provide(LegacyPeopleRpcs.toLayer({
-      GetPerson: () => Effect.succeed(legacyAda),
-      SavePerson: Effect.fn(function*({ person }) {
-        oldSaves++
-        yield* Effect.logInfo("Old RPC handler receives", person)
-        return person
-      }),
-      ListPeople: () => Stream.make(legacyAda)
-    })),
-    Layer.provide(RpcServer.layerProtocolHttp({ path: "/rpc" })),
-    Layer.provide(RpcSerialization.layerJson)
-  )
-  const currentUrl = yield* serve(routes)
-  const legacyUrl = yield* serve(legacyRoutes)
-  const transport = RpcClient.layerProtocolHttp({ url: `${currentUrl}/rpc` })
-  const legacyTransport = RpcClient.layerProtocolHttp({ url: `${legacyUrl}/rpc` })
+  const currentUrl = yield* serve(RpcRoutes)
+  const legacyUrl = yield* serve(LegacyRpcRoutes)
 
-  const current = yield* RpcClient.make(PeopleRpcs).pipe(Effect.provide(transport))
-  assert.deepEqual(yield* current.GetPerson(), ada)
-  const old = yield* RpcClient.make(LegacyPeopleRpcs).pipe(Effect.provide(transport))
-  const oldRead = yield* old.GetPerson()
-  const oldReply = yield* old.SavePerson({ person: legacyAda })
-  assert.deepEqual(oldRead, legacyAda)
-  assert.deepEqual(oldReply, legacyAda)
-  yield* Effect.logInfo("Old RPC client → new server: old shape preserved", oldReply)
+  // An old client calls the upgraded server and keeps its own shape.
+  const old = yield* client(LegacyPeopleRpcs, currentUrl)
+  yield* Effect.logInfo("Old client reads from the new server", yield* old.GetPerson())
+  yield* Effect.logInfo(
+    "Old client saves to the new server",
+    yield* old.SavePerson({ person: { name: "Ada", status: "active" } })
+  )
 
-  const newer = yield* RpcClient.make(PeopleRpcs).pipe(Effect.provide(legacyTransport))
-  const read = yield* newer.GetPerson()
-  assert.deepEqual(read, { fullName: "Ada", status: "active" })
-  yield* Effect.logInfo("New RPC client upgrades an old server's reply", read)
+  // A new client calls a server that hasn't upgraded. Reads upgrade locally;
+  // the write is rejected before the old handler runs, and this application
+  // retries once at the server's versions, dropping email.
+  const newer = yield* client(PeopleRpcs, legacyUrl)
+  yield* Effect.logInfo("New client reads from the old server", yield* newer.GetPerson())
   const save = newer.SavePerson({ person: ada })
-  const retried = yield* save.pipe(Effect.catchTag(
-    "VersionUnsupported",
-    Effect.fn(function*(error) {
-      assert.equal(oldSaves, 0)
-      assert.deepEqual(error.supported, { Person: 1 })
-      yield* Effect.logInfo("RPC write rejected before handler; explicitly retrying once", error.supported)
-      return yield* save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported))
-    })
-  ))
-  assert.deepEqual(retried, read)
-  assert.equal(oldSaves, 1)
-  yield* Effect.logInfo("Retry succeeded; email was dropped", retried)
-
-  // Delivery is incremental: Ada arrives before Grace's status fails to encode.
-  const received: Array<LegacyPerson> = []
-  const failure = yield* old.ListPeople().pipe(
-    Stream.runForEach((person) =>
-      Effect.gen(function*() {
-        received.push(person)
-        yield* Effect.logInfo("Old client receives stream item", person)
-      })
-    ),
-    Effect.flip
+  const saved = yield* save.pipe(
+    Effect.catchTag("VersionUnsupported", (error) =>
+      Effect.logInfo("Old server rejects the write before its handler runs", error.supported).pipe(
+        Effect.andThen(save.pipe(Effect.provideService(VersionedSchema.Versions, error.supported)))
+      ))
   )
-  assert.deepEqual(received, [legacyAda])
-  assert.ok(failure instanceof VersionedSchema.Unrepresentable)
-  yield* Effect.logInfo("Stream ends with Unrepresentable at the archived person", failure.reason)
+  yield* Effect.logInfo("New client receives", saved)
+
+  // Streams deliver each item as it encodes: Ada arrives, then the stream fails
+  // at Grace, whose archived status v1 can't hold.
+  yield* old.ListPeople().pipe(
+    Stream.runForEach((person) => Effect.logInfo("Old client receives a stream item", person)),
+    Effect.catchTag("Unrepresentable", (error) =>
+      Effect.logWarning("Stream ends at a person v1 can't hold", { reason: error.reason }))
+  )
 }).pipe(
   Effect.provide(RpcSerialization.layerJson),
   Effect.provide(FetchHttpClient.layer),

@@ -1,19 +1,14 @@
 import { NodeRuntime } from "@effect/platform-node"
-import { Effect, type Scope } from "effect"
-import { FetchHttpClient, type HttpClient } from "effect/http"
+import { Effect } from "effect"
+import { FetchHttpClient } from "effect/http"
 import { oldClient, oldServer, unrepresentable } from "./client.ts"
-import { LegacyRoutes, Routes, serve } from "./People/Http.ts"
+import { ApiRoutes, serve } from "./Http.ts"
+import * as Legacy from "./legacy.ts"
 
-const scenarios: Record<string, Effect.Effect<void, unknown, HttpClient.HttpClient | Scope.Scope>> = {
-  "old-client": Effect.gen(function*() {
-    return yield* oldClient(yield* serve(Routes))
-  }).pipe(Effect.asVoid),
-  "old-server": Effect.gen(function*() {
-    return yield* oldServer(yield* serve(LegacyRoutes))
-  }).pipe(Effect.asVoid),
-  "unrepresentable": Effect.gen(function*() {
-    return yield* unrepresentable(yield* serve(Routes))
-  }).pipe(Effect.asVoid)
+const scenarios = {
+  "old-client": Effect.flatMap(serve(ApiRoutes), oldClient),
+  "old-server": Effect.flatMap(serve(Legacy.ApiRoutes), oldServer),
+  "unrepresentable": Effect.flatMap(serve(ApiRoutes), unrepresentable)
 }
 
 Effect.gen(function*() {
@@ -23,6 +18,7 @@ Effect.gen(function*() {
   }
   for (const [name, scenario] of Object.entries(scenarios)) {
     if (selected === "all" || name === selected) {
+      // Each scenario gets fresh servers and data, closed when it ends.
       yield* scenario.pipe(Effect.scoped, Effect.timeout("30 seconds"))
     }
   }

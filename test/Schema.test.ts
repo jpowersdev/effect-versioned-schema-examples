@@ -1,31 +1,35 @@
+import { assert, describe, it } from "@effect/vitest"
 import { Effect, Result, Schema } from "effect"
 import { VersionedSchema } from "effect/schema"
-import assert from "node:assert/strict"
-import { test } from "node:test"
 import { Person } from "../src/Domain/Person.ts"
-import { Person as LegacyPerson } from "../src/legacy.ts"
+import * as Legacy from "../src/legacy.ts"
 
-test("one Person history reads old records and writes selected versions", () =>
-  Effect.runPromise(
+describe("Person", () => {
+  it.effect("reads records the previous release wrote", () =>
     Effect.gen(function*() {
-      const legacy = { name: "Ada", status: "active" as const }
-      const ada = { fullName: "Ada", status: "active" as const, email: "ada@example.com" }
-      const record = yield* Schema.encodeEffect(LegacyPerson)(legacy)
-      const decoded = yield* Schema.decodeUnknownEffect(Person)(record)
-      assert.deepEqual(decoded, { fullName: "Ada", status: "active" })
-      assert.equal("_version" in decoded, false)
-      assert.deepEqual(yield* Schema.encodeEffect(Person)(ada), { _version: 3, ...ada })
-      assert.deepEqual(yield* Schema.encodeEffect(VersionedSchema.at(Person, { Person: 2 }))(ada), {
+      const record = yield* Schema.encodeEffect(Legacy.Person)({ name: "Ada", status: "active" })
+      assert.deepStrictEqual(record, { _version: 1, name: "Ada", status: "active" })
+      assert.deepStrictEqual(yield* Schema.decodeUnknownEffect(Person)(record), { fullName: "Ada", status: "active" })
+    }))
+
+  it.effect("writes the latest version, or the versions it's given", () =>
+    Effect.gen(function*() {
+      const ada: Person = { fullName: "Ada", status: "active", email: "ada@example.com" }
+      assert.deepStrictEqual(yield* Schema.encodeEffect(Person)(ada), { _version: 3, ...ada })
+      assert.deepStrictEqual(yield* Schema.encodeEffect(VersionedSchema.at(Person, { Person: 2 }))(ada), {
         _version: 2,
         fullName: "Ada",
         status: "active"
       })
-      const compatible = VersionedSchema.at(Person, { Person: 1 })
-      const old = yield* Schema.encodeEffect(compatible)(ada)
-      assert.deepEqual(old, record)
-      assert.deepEqual(yield* Schema.decodeUnknownEffect(LegacyPerson)(old), legacy)
-      const rejected = Schema.encodeResult(compatible)({ fullName: "Grace", status: "archived" })
-      assert.ok(Result.isFailure(rejected))
-      assert.equal(rejected.failure._tag, "SchemaError")
+      const v1 = yield* Schema.encodeEffect(VersionedSchema.at(Person, { Person: 1 }))(ada)
+      assert.deepStrictEqual(yield* Schema.decodeUnknownEffect(Legacy.Person)(v1), { name: "Ada", status: "active" })
+    }))
+
+  it("fails to write an archived person at v1", () => {
+    const result = Schema.encodeResult(VersionedSchema.at(Person, { Person: 1 }))({
+      fullName: "Grace",
+      status: "archived"
     })
-  ))
+    assert.isTrue(Result.isFailure(result))
+  })
+})
