@@ -39,8 +39,9 @@ const LegacyPeopleLive = LegacyPersonEntity.toLayer({
 })
 const ClusterPeopleLive = PersonEntity.toLayer({
   Save: Effect.fn(function*({ payload }) {
-    const versions = yield* VersionedSchema.RequestVersions
-    yield* Effect.logInfo("Upgraded runner handles", { person: payload.person, versions })
+    // The version of Person this caller sent, which its reply is written at
+    const version = yield* VersionedSchema.requestVersion(Person)
+    yield* Effect.logInfo("Upgraded runner handles", { person: payload.person, version })
     return payload.person
   })
 })

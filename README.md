@@ -117,7 +117,7 @@ Each supporting example is contained in one file and runs independently:
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `pnpm example:onboarding` | [Adopting versioning](examples/onboarding.ts): records and installed clients from before versioning. Those clients send no version header, so they get the latest version unless the server pins older ones with `VersionedSchema.DefaultVersions`. The pin comes out once every client sends the header. |
 | `pnpm example:rpc`        | [RPC compatibility](examples/rpc.ts): the same deployment mismatch and explicit retry, plus a stream that delivers Ada before failing at Grace's archived status.                                                                                                                                         |
-| `pnpm example:cluster`    | [Queued work during a rollout](examples/cluster.ts): a SQLite mailbox waits for an upgraded runner, holds later work for Ada in order, lets Bob progress, and replies at each caller's version. The handler reads the caller's versions from `VersionedSchema.RequestVersions`.                           |
+| `pnpm example:cluster`    | [Queued work during a rollout](examples/cluster.ts): a SQLite mailbox waits for an upgraded runner, holds later work for Ada in order, lets Bob progress, and replies at each caller's version. The handler reads the version each caller sent with `VersionedSchema.requestVersion(Person)`.             |
 | `pnpm example:storage`    | [Stored data](examples/storage.ts): read old records, choose write versions, and version nested schemas independently.                                                                                                                                                                                    |
 
 The cluster walkthrough uses a temporary SQLite file, SQL polling, and an in-memory runner lock store. It demonstrates persistence across runner replacement within one process; it does not simulate multi-host coordination or a process crash. It leaves `unknownVersionTimeout` out, so messages wait without a limit. The temporary database is removed afterward.
@@ -130,12 +130,12 @@ pnpm test
 
 This typechecks every source file, then runs the tests with [`@effect/vitest`](https://github.com/Effect-TS/effect/tree/main/packages/vitest). They check the HTTP scenarios' logged wire bodies, statuses, handler inputs and retries against the traces above, and run each supporting example, checking that its steps happen in order. Each walkthrough has a timeout so a failure cannot leave it hanging.
 
-The examples use an **unreleased proposal build** pinned to [`31398962b6`](https://github.com/jpowersdev/effect/commit/31398962b6151c337089a3e7df767c8907349815), not an official Effect release.
+The examples use an **unreleased proposal build** pinned to [`be2a7ade81`](https://github.com/jpowersdev/effect/commit/be2a7ade8191834fcfcb7185dfbde8da15b6657b), not an official Effect release.
 
 <details>
 <summary>Package artifacts and rebuilding</summary>
 
-[snapshot.json](snapshot.json) records the source commit, package versions, build tools, and SHA-256 checksums. The packages are hosted in this repository's [development release](https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-31398962b6). All five Effect packages come from the same commit. The workspace overrides pin transitive dependencies to those tarballs; the lockfile records their integrity hashes.
+[snapshot.json](snapshot.json) records the source commit, package versions, build tools, and SHA-256 checksums. The packages are hosted in this repository's [development release](https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-be2a7ade81). All five Effect packages come from the same commit. The workspace overrides pin transitive dependencies to those tarballs; the lockfile records their integrity hashes.
 
 ```sh
 pnpm verify:snapshot   # Download the published artifacts and verify SHA-256
