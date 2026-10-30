@@ -1,0 +1,1989 @@
+{
+  "date": "2026-10-30T21:25:55.284Z",
+  "node": "v24.21.0",
+  "os": "linux 7.0.0-1017-azure",
+  "cpu": "AMD EPYC 9V45 96-Core Processor",
+  "rounds": 10,
+  "results": [
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 1,
+      "nsPerCall": 25125.568499999987
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 25472.73150000001
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 1,
+      "nsPerCall": 33251.04749999991
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 35718.226999999955
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 1,
+      "nsPerCall": 389887.0800000009
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 381560.4800000005
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 1,
+      "nsPerCall": 56624.95249999984
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 60384.48500000004
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 1,
+      "nsPerCall": 61307.88700000005
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 63154.70849999997
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 1,
+      "nsPerCall": 580021.9999999991
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 590146.8999999997
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 33245.93049999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 41447.92599999994
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 48329.49050000002
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 63576.53049999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 508584.45999999956
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 73659.88949999998
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 84574.48399999998
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 81164.70000000004
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 100087.89150000007
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 1,
+      "nsPerCall": 653191.0199999993
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 24283.178999999964
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 2,
+      "nsPerCall": 24489.570500000016
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 33241.730000000076
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 2,
+      "nsPerCall": 33618.871000000014
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 403410.8200000003
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 2,
+      "nsPerCall": 397466.3599999997
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 56134.66049999988
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 2,
+      "nsPerCall": 58679.31399999998
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 63409.522500000094
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 2,
+      "nsPerCall": 60849.362000000045
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 587822.1599999984
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 2,
+      "nsPerCall": 600073.3999999989
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 31975.789500000017
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 41374.53900000003
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 46696.804499999984
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 62266.39550000004
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 518454.5400000013
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 70945.34899999986
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 80895.30499999989
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 79997.01950000007
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 100858.86199999982
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 2,
+      "nsPerCall": 612337.2999999992
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 3,
+      "nsPerCall": 23442.995999999992
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 23339.992999999937
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 3,
+      "nsPerCall": 32940.05800000002
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 32600.663000000055
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 3,
+      "nsPerCall": 555187.2200000002
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 418655.9999999997
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 3,
+      "nsPerCall": 59368.32400000003
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 57275.98200000011
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 3,
+      "nsPerCall": 57912.32150000007
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 61217.38949999997
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 3,
+      "nsPerCall": 561849.5199999984
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 630399.7800000003
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 32178.859999999986
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 40523.53599999993
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 46696.93699999993
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 59674.753000000004
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 445981.7799999996
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 71561.39000000007
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 85676.61199999996
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 85209.1355
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 98600.00599999989
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 3,
+      "nsPerCall": 650995.0000000003
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 23854.582499999993
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 4,
+      "nsPerCall": 23731.699499999933
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 34972.581500000044
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 4,
+      "nsPerCall": 34499.02100000008
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 453237.6199999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 4,
+      "nsPerCall": 410414.79999999976
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 62079.679999999826
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 4,
+      "nsPerCall": 57286.764500000005
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 59357.200500000086
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 4,
+      "nsPerCall": 60566.20150000004
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 616159.2999999993
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 4,
+      "nsPerCall": 630421.4400000001
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 34718.63949999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 41417.1255
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 46530.305
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 61650.740499999985
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 538355.2400000007
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 71990.36999999998
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 90383.73550000005
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 87399.55199999985
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 102393.17900000015
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 4,
+      "nsPerCall": 657994.7200000015
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 5,
+      "nsPerCall": 25594.911999999906
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 24572.89700000001
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 5,
+      "nsPerCall": 34657.59250000007
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 35663.05449999993
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 5,
+      "nsPerCall": 405531.2400000002
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 413635.32000000076
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 5,
+      "nsPerCall": 58272.719000000056
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 59163.626000000026
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 5,
+      "nsPerCall": 62700.51549999994
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 64738.744999999995
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 5,
+      "nsPerCall": 616543.0199999992
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 629606.48
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 33167.90350000008
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 41441.99249999997
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 48107.5975
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 64783.836500000005
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 536997.1800000007
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 77499.29899999984
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 85061.61799999996
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 80617.74400000014
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 103942.36550000004
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 5,
+      "nsPerCall": 625765.5799999997
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 24446.25899999994
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 6,
+      "nsPerCall": 24490.34000000006
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 34978.34699999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 6,
+      "nsPerCall": 33348.41849999998
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 398196.50000000023
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 6,
+      "nsPerCall": 398392.00000000006
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 59655.40799999996
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 6,
+      "nsPerCall": 57960.88099999997
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 60987.4769999999
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 6,
+      "nsPerCall": 59052.678999999895
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 592084.6000000006
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 6,
+      "nsPerCall": 571130.3800000019
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 31862.230500000012
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 40665.22250000003
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 44715.25200000007
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 60968.485500000046
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 506838.02000000014
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 76171.23500000003
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 84390.45699999997
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 86381.93249999995
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 100405.3715
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 6,
+      "nsPerCall": 656094.8600000006
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 7,
+      "nsPerCall": 24380.154500000004
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 23848.82700000003
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 7,
+      "nsPerCall": 34139.248000000065
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 34658.1195
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 7,
+      "nsPerCall": 441495.80000000016
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 386619.8199999996
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 7,
+      "nsPerCall": 60400.13599999998
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 60149.23649999992
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 7,
+      "nsPerCall": 61439.623999999974
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 59903.11750000001
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 7,
+      "nsPerCall": 571468.3799999988
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 582328.1799999996
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 31087.065499999993
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 40371.24900000004
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 46412.59850000006
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 62637.16550000004
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 547893.8799999992
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 75715.26999999993
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 84061.99200000014
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 82563.22049999994
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 98874.17800000003
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 7,
+      "nsPerCall": 616810.0200000004
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 23500.3605
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 8,
+      "nsPerCall": 24863.43199999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 33623.77149999998
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 8,
+      "nsPerCall": 34556.58850000009
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 390245.13999999955
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 8,
+      "nsPerCall": 488444.9200000006
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 57499.506500000054
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 8,
+      "nsPerCall": 57449.10899999991
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 61556.86050000008
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 8,
+      "nsPerCall": 59475.28149999994
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 579243.3000000005
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 8,
+      "nsPerCall": 576708.0999999985
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 32248.48499999996
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 43053.75750000007
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 45701.06950000001
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 61805.296500000055
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 521650.8599999997
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 73466.84800000003
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 80427.52050000013
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 83526.29700000012
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 101161.00549999988
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 8,
+      "nsPerCall": 667480.6000000001
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 9,
+      "nsPerCall": 23590.7785
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 25452.088499999943
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 9,
+      "nsPerCall": 33303.43000000005
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 32318.918000000052
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 9,
+      "nsPerCall": 438424.7199999981
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 395259.5400000007
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 9,
+      "nsPerCall": 57653.81100000002
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 58258.06699999999
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 9,
+      "nsPerCall": 58585.211000000076
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 60805.8645000001
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 9,
+      "nsPerCall": 577785.7799999992
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 577784.8799999993
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 32006.116499999964
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 40211.39249999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 45532.01549999994
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 61461.39200000004
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 478308.1400000003
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 71929.77600000006
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 79538.60600000007
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 78922.84999999992
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 98029.0514999997
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 9,
+      "nsPerCall": 628423.1199999999
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 24397.478000000032
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 10,
+      "nsPerCall": 23342.899999999987
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 33770.56849999997
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 10,
+      "nsPerCall": 34251.05499999995
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 399049
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 10,
+      "nsPerCall": 460258.3599999991
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 57529.99799999998
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 10,
+      "nsPerCall": 59663.34800000004
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 62522.17000000007
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 10,
+      "nsPerCall": 58662.17349999988
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 580672.0200000018
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "plain",
+      "version": "latest",
+      "build": "base",
+      "round": 10,
+      "nsPerCall": 590255.7000000002
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 32061.535500000104
+    },
+    {
+      "transport": "httpapi",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 40349.16650000002
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 44626.478000000134
+    },
+    {
+      "transport": "httpapi",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 62404.39049999998
+    },
+    {
+      "transport": "httpapi",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 512261.26000000024
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 74123.93550000002
+    },
+    {
+      "transport": "rpc",
+      "call": "get",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 84804.25250000008
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 84423.70249999998
+    },
+    {
+      "transport": "rpc",
+      "call": "save",
+      "schema": "versioned",
+      "version": "v1",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 98855.4754999998
+    },
+    {
+      "transport": "rpc",
+      "call": "build",
+      "schema": "versioned",
+      "version": "latest",
+      "build": "proposal",
+      "round": 10,
+      "nsPerCall": 619859.9999999999
+    }
+  ]
+}

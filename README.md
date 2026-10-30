@@ -133,6 +133,49 @@ Each supporting example is one self-contained file that declares its own schemas
 
 The cluster walkthrough uses a temporary SQLite file, SQL polling, and an in-memory runner lock store. It demonstrates persistence across runner replacement within one process; it does not simulate multi-host coordination or a process crash. It leaves `unknownVersionTimeout` out, so messages wait without a limit. The temporary database is removed afterward.
 
+## Performance
+
+Endpoints and RPCs that don't use a versioned schema cost about the same as before: five of six cases show no measurable difference, and Rpc save is about 3.5% slower (1–2 µs). Using a versioned schema adds 8–23 µs per call, and 17–40 µs when the client speaks an older version.
+
+The [benchmarks](benchmarks) time HttpApi and Rpc calls end to end, through the real client, an in-process `fetch` and the real server, with a handler that returns at once and one small Person. They compare the proposal with an unmodified build of the [Effect commit it's based on](https://github.com/Effect-TS/effect/commit/c065ed7b2cd9de19cfd5303114908128a70b309f), published as [snapshot-c065ed7b2c](https://github.com/jpowersdev/effect-versioned-schema-examples/releases/tag/snapshot-c065ed7b2c). These numbers come from [one run](https://github.com/jpowersdev/effect-versioned-schema-examples/actions/runs/41129933827) on a GitHub-hosted runner (AMD EPYC 9V45, 4 threads, Node 24.21.0): 10 rounds, each case in a fresh process, with the two builds taking turns going first. The raw results are in [benchmarks/results.json](benchmarks/results.json).
+
+Without a versioned schema, proposal vs baseline. `build` is building the server and client and making the first call.
+
+| Call          | Baseline | Proposal | Difference (95% interval) |
+| ------------- | -------- | -------- | ------------------------- |
+| HttpApi get   | 24.5 µs  | 24.4 µs  | -0.2% (-2.2% to +4.5%)    |
+| HttpApi save  | 34.1 µs  | 34.7 µs  | +1.4% (-1.4% to +4.9%)    |
+| HttpApi build | 438.4 µs | 399.0 µs | -2.1% (-13.3% to +2.0%)   |
+| Rpc get       | 58.3 µs  | 59.2 µs  | +1.0% (-3.5% to +6.6%)    |
+| Rpc save      | 60.6 µs  | 61.6 µs  | +3.5% (+3.0% to +5.7%)    |
+| Rpc build     | 580.0 µs | 590.1 µs | +1.7% (-1.6% to +3.7%)    |
+
+With a versioned schema on the proposal, vs the same call with a plain schema on the baseline:
+
+| Call                       | Baseline, plain schema | Proposal, versioned schema | Difference        |
+| -------------------------- | ---------------------- | -------------------------- | ----------------- |
+| HttpApi get                | 24.5 µs                | 32.2 µs                    | +7.7 µs (+31.4%)  |
+| HttpApi get, client at v1  | 24.5 µs                | 41.4 µs                    | +16.9 µs (+68.9%) |
+| HttpApi save               | 34.1 µs                | 46.5 µs                    | +12.4 µs (+36.3%) |
+| HttpApi save, client at v1 | 34.1 µs                | 62.3 µs                    | +28.1 µs (+82.4%) |
+| HttpApi build              | 438.4 µs               | 518.5 µs                   | +80.0 µs (+18.3%) |
+| Rpc get                    | 58.3 µs                | 73.7 µs                    | +15.4 µs (+26.4%) |
+| Rpc get, client at v1      | 58.3 µs                | 84.6 µs                    | +26.3 µs (+45.1%) |
+| Rpc save                   | 60.6 µs                | 83.5 µs                    | +23.0 µs (+37.9%) |
+| Rpc save, client at v1     | 60.6 µs                | 100.4 µs                   | +39.8 µs (+65.8%) |
+| Rpc build                  | 580.0 µs               | 651.0 µs                   | +71.0 µs (+12.2%) |
+
+What these numbers do and don't show:
+
+- **The percentages are an upper bound.** There's no network and the handler does no work, so versioning is a large share of a small total. Over a network, with real handlers, the same microseconds are a much smaller share.
+- **The versioned cost is for both sides.** It includes writing and reading `_version`, decoding one of three record versions, and negotiation, on the client and the server. A client at v1 adds the migrations in both directions.
+- **It grows with the number of versioned values** in a call, such as a list of people. Each case here has one.
+- **Cluster's transport is covered, its storage isn't.** Cluster entities use the same Rpc client and server, so the Rpc rows cover their negotiation. Decoding persisted messages isn't measured.
+- **The versioned path hasn't been optimized.**
+- **The runner is shared cloud hardware.** Single rounds vary, and the intervals in the first table show by how much.
+
+To run them yourself, use `pnpm bench [--rounds n]` locally, or the Benchmark workflow from the Actions tab. Benchmarks are noisy on a busy machine, so run them while it's idle.
+
 ## Checks and package pin
 
 ```sh
