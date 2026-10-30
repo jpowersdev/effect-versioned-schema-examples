@@ -18,6 +18,8 @@
     "example:rpc": "node examples/rpc.ts",
     "example:cluster": "node examples/cluster.ts",
     "check": "tsc --noEmit",
+    "format": "dprint fmt",
+    "lint": "dprint check",
     "test": "pnpm check && vitest run",
     "test:http": "vitest run test/Http.test.ts",
     "test:schema": "vitest run test/Schema.test.ts",
@@ -33,6 +35,7 @@
     "@effect/vitest": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz",
     "typescript": "7.0.2",
     "@types/node": "26.6.5",
-    "vitest": "5.0.5"
+    "vitest": "5.0.5",
+    "dprint": "0.63.0"
   }
 }

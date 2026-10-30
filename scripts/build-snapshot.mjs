@@ -34,7 +34,11 @@ try {
   }
   const sums = []
   for (const pkg of pin.packages) {
-    run("pnpm", ["--config.verifyDepsBeforeRun=false", "pack", "--pack-destination", artifacts], join(checkout, pkg.path))
+    run(
+      "pnpm",
+      ["--config.verifyDepsBeforeRun=false", "pack", "--pack-destination", artifacts],
+      join(checkout, pkg.path)
+    )
     const digest = createHash("sha256").update(await readFile(join(artifacts, pkg.file))).digest("hex")
     sums.push(`${digest}  ${pkg.file}`)
   }

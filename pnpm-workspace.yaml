@@ -9,4 +9,5 @@ overrides:
   "@effect/sql-sqlite-node": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-sql-sqlite-node-4.0.7-versioned.8fa8f7c1b2.tgz"
   "@effect/vitest": "https://github.com/jpowersdev/effect-versioned-schema-examples/releases/download/snapshot-8fa8f7c1b2/effect-vitest-4.0.7-versioned.8fa8f7c1b2.tgz"
 
-allowBuilds: {}
+allowBuilds:
+  dprint: false

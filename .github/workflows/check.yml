@@ -28,4 +28,5 @@ jobs:
       - uses: pnpm/action-setup@f520eceda224fe1a4aed5a2a27a194379a409996 # v6
       - run: pnpm install --frozen-lockfile
       - run: pnpm verify:snapshot
+      - run: pnpm lint
       - run: pnpm test

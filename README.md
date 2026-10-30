@@ -50,24 +50,30 @@ A read succeeds immediately: the old server returns `{ name: "Ada", status: "act
 For a write, the new client sends `fullName` and a new optional `email` field:
 
 ```text
-New client writes at v3    { fullName: "Ada", status: "active", email: "ada@example.com" }
-Old server responds, 400   VersionUnsupported { supported: { Person: 1 } }
-                          The handler has not run.
-Application retries at v1  { _version: 1, name: "Ada", status: "active" }
-Old server handler sees   { name: "Ada", status: "active" }
-New client receives       { fullName: "Ada", status: "active" }
+New client writes           { fullName: "Ada", status: "active", email: "ada@example.com" }
+HTTP request, Person=3      { _version: 3, fullName: "Ada", status: "active", email: "ada@example.com" }
+HTTP response, 400          VersionUnsupported { supported: { Person: 1 } }
+                            The old server's handler has not run.
+HTTP request, Person=1      { _version: 1, name: "Ada", status: "active" }
+Old server handler receives { name: "Ada", status: "active" }
+HTTP response, 200          { _version: 1, name: "Ada", status: "active" }
+New client receives         { fullName: "Ada", status: "active" }
 ```
 
 The application explicitly chooses **one retry**, accepting that `email` will be dropped:
 
 ```ts
+const save = client.people.save({ params: { id: "ada" }, payload: updated })
+
 save.pipe(
-  Effect.catchTag("VersionUnsupported", (error) =>
-    save.pipe(Effect.provideService(VersionedSchema.ClientVersions, error.supported)))
+  Effect.catchTag(
+    "VersionUnsupported",
+    (error) => save.pipe(Effect.provideService(VersionedSchema.ClientVersions, error.supported))
+  )
 )
 ```
 
-The transport does not decide whether losing that field is acceptable. That policy stays at the call site.
+[src/client.ts](src/client.ts) also logs the rejection before retrying. The transport does not decide whether losing that field is acceptable. That policy stays at the call site.
 
 ## 3. A value that cannot be translated
 
@@ -78,9 +84,9 @@ pnpm demo:unrepresentable
 ```
 
 ```text
-New server returns    { fullName: "Grace", status: "archived" }
-HTTP response, 406    Unrepresentable { id: "Person", version: 1, ... }
-Old client fails      with a typed Unrepresentable error, which it handles
+New server returns                { fullName: "Grace", status: "archived" }
+HTTP response, 406                Unrepresentable { id: "Person", version: 1, ... }
+Old client can't show this person { reason: "Person can't be written at v1: An archived person needs Person v3" }
 ```
 
 The reverse migration explicitly calls `VersionedSchema.unrepresentable(...)`. It does not invent a fallback status. This request is not retried.
@@ -126,9 +132,12 @@ The cluster walkthrough uses a temporary SQLite file, SQL polling, and an in-mem
 
 ```sh
 pnpm test
+pnpm lint
 ```
 
-This typechecks every source file, then runs the tests with [`@effect/vitest`](https://github.com/Effect-TS/effect/tree/main/packages/vitest). They check the HTTP scenarios' logged wire bodies, statuses, handler inputs and retries against the traces above, and run each supporting example, checking that its steps happen in order. Each walkthrough has a timeout so a failure cannot leave it hanging.
+`pnpm test` typechecks every source file, then runs the tests with [`@effect/vitest`](https://github.com/Effect-TS/effect/tree/main/packages/vitest). They check the HTTP scenarios' logged wire bodies, statuses, handler inputs and retries against the traces above, and run each supporting example, checking that its steps happen in order. Each walkthrough has a timeout so a failure cannot leave it hanging.
+
+`pnpm lint` checks formatting with Effect's dprint settings; `pnpm format` applies them.
 
 The examples use an **unreleased proposal build** pinned to [`8fa8f7c1b2`](https://github.com/jpowersdev/effect/commit/8fa8f7c1b24f89d1924abedd6eec838986186fa2), not an official Effect release.
 

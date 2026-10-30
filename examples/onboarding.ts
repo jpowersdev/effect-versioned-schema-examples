@@ -10,9 +10,10 @@ import { serve } from "../src/Http.ts"
 const InstalledCustomer = Schema.Struct({ name: Schema.String })
 
 class InstalledApi extends HttpApi.make("api").add(
-  HttpApiGroup.make("customers")
-    .add(HttpApiEndpoint.get("get", "/customer", { success: InstalledCustomer }))
-    .add(HttpApiEndpoint.put("save", "/customer", { payload: InstalledCustomer, success: InstalledCustomer }))
+  HttpApiGroup.make("customers").add(
+    HttpApiEndpoint.get("get", "/customer", { success: InstalledCustomer }),
+    HttpApiEndpoint.put("save", "/customer", { payload: InstalledCustomer, success: InstalledCustomer })
+  )
 ) {}
 
 // Adopting versioning: the shape already in use becomes v1, read without
@@ -28,56 +29,68 @@ const Customer = VersionedSchema.make("Customer", {
 })
 
 class Api extends HttpApi.make("api").add(
-  HttpApiGroup.make("customers")
-    .add(HttpApiEndpoint.get("get", "/customer", { success: Customer }))
-    .add(HttpApiEndpoint.put("save", "/customer", { payload: Customer, success: Customer }))
+  HttpApiGroup.make("customers").add(
+    HttpApiEndpoint.get("get", "/customer", { success: Customer }),
+    HttpApiEndpoint.put("save", "/customer", { payload: Customer, success: Customer })
+  )
 ) {}
 
-const HttpCustomersLive = HttpApiBuilder.group(
+const CustomersApiHandlers = HttpApiBuilder.group(
   Api,
   "customers",
   Effect.fn(function*(handlers) {
     // A record stored before versioning reads as v1, upgraded to the current shape.
-    const customer = yield* Ref.make(yield* Schema.decodeUnknownEffect(Customer)({ name: "Ada" }))
+    const stored = { name: "Ada" }
+    const initial = yield* Schema.decodeUnknownEffect(Customer)(stored)
+    const customer = yield* Ref.make(initial)
 
-    return handlers
-      .handle("get", () => Ref.get(customer))
-      .handle(
-        "save",
-        Effect.fn(function*({ payload }) {
-          yield* Effect.logInfo("Server handler receives", payload)
-          yield* Ref.set(customer, payload)
-          return payload
-        })
-      )
+    return handlers.handleAll({
+      get: () => Ref.get(customer),
+      save: Effect.fn(function*({ payload }) {
+        yield* Effect.logInfo("Server handler receives", payload)
+        yield* Ref.set(customer, payload)
+        return payload
+      })
+    })
   })
 )
 
-const ApiRoutes = HttpApiBuilder.layer(Api).pipe(Layer.provide(HttpCustomersLive))
+const ApiRoutes = HttpApiBuilder.layer(Api).pipe(
+  Layer.provide(CustomersApiHandlers)
+)
 
 Effect.gen(function*() {
-  // By default, requests without the header get the latest version, as servers
-  // answer today. An installed client can't read v2.
-  const unpinned = yield* HttpApiClient.make(InstalledApi, { baseUrl: yield* serve(ApiRoutes) })
+  // By default, a request without the header gets the latest version, which is
+  // how servers answer today. An installed client can't read v2.
+  const unpinnedUrl = yield* serve(ApiRoutes)
+  const unpinned = yield* HttpApiClient.make(InstalledApi, { baseUrl: unpinnedUrl })
+
   yield* unpinned.customers.get().pipe(
     Effect.flatMap((customer) => Effect.logInfo("Installed client reads", customer)),
     Effect.catch((error) => Effect.logWarning("Installed client can't read the latest version", error.message))
   )
 
-  // Until every installed client sends the header, pin the version requests
-  // without it get. Remove the pin afterwards, and they get the latest again.
-  const baseUrl = yield* serve(
-    ApiRoutes.pipe(Layer.provide(Layer.succeed(VersionedSchema.DefaultVersions, Customer.version(1))))
+  // Until every installed client sends the header, pin the version that
+  // requests without it get. Remove the pin afterwards, and they get the latest
+  // version again.
+  const PinnedRoutes = ApiRoutes.pipe(
+    Layer.provide(Layer.succeed(VersionedSchema.DefaultVersions, Customer.version(1)))
   )
-  const installed = yield* HttpApiClient.make(InstalledApi, { baseUrl })
-  yield* Effect.logInfo("Installed client reads, with the pin", yield* installed.customers.get())
-  const saved = yield* installed.customers.save({ payload: { name: "Ada Lovelace" } })
+  const pinnedUrl = yield* serve(PinnedRoutes)
+  const pinned = yield* HttpApiClient.make(InstalledApi, { baseUrl: pinnedUrl })
+
+  const read = yield* pinned.customers.get()
+  yield* Effect.logInfo("Installed client reads, with the pin", read)
+
+  const saved = yield* pinned.customers.save({ payload: { name: "Ada Lovelace" } })
   yield* Effect.logInfo("Installed client saves, with the pin", saved)
 
   // A client built with the versioned contract sends the header, so the pin
   // doesn't apply to it.
-  const current = yield* HttpApiClient.make(Api, { baseUrl })
-  yield* Effect.logInfo("Current client reads", yield* current.customers.get())
+  const current = yield* HttpApiClient.make(Api, { baseUrl: pinnedUrl })
+
+  const currentRead = yield* current.customers.get()
+  yield* Effect.logInfo("Current client reads", currentRead)
 }).pipe(
   Effect.provide(FetchHttpClient.layer),
   Effect.scoped,
