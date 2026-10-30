@@ -39,11 +39,12 @@ export const check = <A, E, R>(call: Effect.Effect<A, E, R>, expected: unknown) 
 // Runs `call` `iterations` times per sample after a warmup, and returns the
 // median time per call in nanoseconds, with the fastest and slowest samples.
 export const measure = <A, E, R>(call: Effect.Effect<A, E, R>, options: {
+  readonly warmup: number
   readonly iterations: number
   readonly samples: number
 }) =>
   Effect.gen(function*() {
-    for (let i = 0; i < options.iterations; i++) yield* call
+    for (let i = 0; i < options.warmup; i++) yield* call
 
     const samples: Array<number> = []
     for (let sample = 0; sample < options.samples; sample++) {
@@ -60,13 +61,17 @@ export const measure = <A, E, R>(call: Effect.Effect<A, E, R>, options: {
     }
   })
 
+// Calls keep getting faster for about 15,000 calls while V8 optimizes them,
+// so samples start after that.
 export const iterationsFor = (call: Args["call"]) =>
   call === "build"
     ? {
+      warmup: 200,
       iterations: 50,
       samples: 10
     }
     : {
+      warmup: 15_000,
       iterations: 2_000,
       samples: 10
     }
