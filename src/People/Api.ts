@@ -1,5 +1,5 @@
 import { Schema } from "effect"
-import { HttpApiEndpoint, HttpApiGroup } from "effect/http-api"
+import { HttpApi, HttpApiEndpoint, HttpApiGroup } from "effect/http-api"
 import { Person, PersonNotFound } from "../Domain/Person.ts"
 
 export class PeopleApi extends HttpApiGroup.make("people")
@@ -14,3 +14,6 @@ export class PeopleApi extends HttpApiGroup.make("people")
     success: Person
   }))
 {}
+
+// This example has one group, so the combined API lives here too.
+export class Api extends HttpApi.make("api").add(PeopleApi) {}

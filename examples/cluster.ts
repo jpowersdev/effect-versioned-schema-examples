@@ -1,7 +1,10 @@
+import { NodeRuntime } from "@effect/platform-node"
 import * as NodeCrypto from "@effect/platform-node/NodeCrypto"
 import * as SqliteClient from "@effect/sql-sqlite-node/SqliteClient"
 import { Context, Effect, Exit, Fiber, Layer, Logger, Option, Scope } from "effect"
 import {
+  ClusterSchema,
+  Entity,
   EntityId,
   RunnerHealth,
   Runners,
@@ -11,18 +14,23 @@ import {
   Snowflake,
   SqlMessageStorage
 } from "effect/cluster"
+import { Rpc } from "effect/rpc"
 import { SqlClient } from "effect/sql"
 import assert from "node:assert/strict"
 import { mkdtemp, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
-import { test } from "node:test"
-import { People } from "../src/People.ts"
-import { ClusterPeopleLive } from "../src/People/Cluster.ts"
-import { PersonEntity } from "../src/People/Entity.ts"
-import { ada } from "../src/People/Seed.ts"
-import { PersonEntity as LegacyPersonEntity } from "./fixtures/legacy/Entity.ts"
-import { ada as legacyAda } from "./fixtures/legacy/Seed.ts"
+import { Person } from "../src/Domain/Person.ts"
+import { Person as LegacyPerson } from "../src/legacy.ts"
+
+const PersonEntity = Entity.make("People", [
+  Rpc.make("Save", { payload: { person: Person }, success: Person })
+]).annotateRpcs(ClusterSchema.Persisted, true)
+const LegacyPersonEntity = Entity.make("People", [
+  Rpc.make("Save", { payload: { person: LegacyPerson }, success: LegacyPerson })
+]).annotateRpcs(ClusterSchema.Persisted, true)
+const ada: Person = { fullName: "Ada", status: "active", email: "ada@example.com" }
+const legacyAda: LegacyPerson = { name: "Ada", status: "active" }
 
 const config = {
   shardsPerGroup: 1,
@@ -123,23 +131,15 @@ const rollout = Effect.gen(function*() {
   yield* Effect.logInfo("Stopped the v1 runner. The requests remain in SQLite.")
 
   const newScope = yield* Effect.acquireRelease(Scope.make(), (scope) => Scope.close(scope, Exit.void))
-  // Use the real entity handlers, observing their People dependency to assert
-  // the order in which the persisted requests reach application code.
-  const peopleContext = yield* Layer.build(People.layer)
-  const people = Context.get(peopleContext, People)
-  const observedPeople = Layer.succeed(
-    People,
-    People.of({
-      ...people,
-      save: Effect.fn(function*(id, person) {
-        handled.push(`v3:${person.fullName}`)
-        return yield* people.save(id, person)
-      })
+  const ClusterPeopleLive = PersonEntity.toLayer({
+    Save: Effect.fn(function*({ payload, versions }) {
+      handled.push(`v3:${payload.person.fullName}`)
+      yield* Effect.logInfo("Upgraded runner handles the queued request", { person: payload.person, versions })
+      return payload.person
     })
-  )
+  })
   yield* Layer.buildWithScope(
     ClusterPeopleLive.pipe(
-      Layer.provide(observedPeople),
       Layer.provideMerge(runtime(false)),
       Layer.provide(logger)
     ),
@@ -152,5 +152,4 @@ const rollout = Effect.gen(function*() {
   yield* Effect.logInfo("Cluster rollout example passed.")
 })
 
-test("SQLite mailbox preserves order across an incompatible runner upgrade", () =>
-  Effect.runPromise(rollout.pipe(Effect.scoped, Effect.timeout("30 seconds"))))
+rollout.pipe(Effect.scoped, Effect.timeout("30 seconds"), NodeRuntime.runMain)

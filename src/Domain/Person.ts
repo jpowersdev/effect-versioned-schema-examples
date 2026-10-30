@@ -1,22 +1,18 @@
 import { Schema } from "effect"
 import { VersionedSchema } from "effect/schema"
-import { Address } from "./Address.ts"
 
-// The application imports one Person. Its history belongs with the schema,
-// and Address evolves independently of Person's field migrations.
+// The application imports one Person; its complete history lives here.
 export const Person = VersionedSchema.make("Person", {
   version: 1,
   payload: Schema.Struct({
     name: Schema.String,
-    status: Schema.Literals(["active", "suspended"]),
-    address: Address
+    status: Schema.Literals(["active", "suspended"])
   })
 }).next({
   version: 2,
   payload: Schema.Struct({
     fullName: Schema.String,
-    status: Schema.Literals(["active", "suspended"]),
-    address: Address
+    status: Schema.Literals(["active", "suspended"])
   }),
   // An explicit migration; step.renameField("name", "fullName") does the same.
   migration: (step) =>
@@ -29,8 +25,7 @@ export const Person = VersionedSchema.make("Person", {
   payload: Schema.Struct({
     fullName: Schema.String,
     status: Schema.Literals(["active", "suspended", "archived"]),
-    email: Schema.optionalKey(Schema.String),
-    address: Address
+    email: Schema.optionalKey(Schema.String)
   }),
   migration: (step) =>
     step.addField("email").mapField("status", {

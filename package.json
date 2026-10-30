@@ -8,16 +8,18 @@
     "node": ">=24.12.0"
   },
   "scripts": {
-    "dev": "node --watch src/main.ts",
     "start": "node src/main.ts",
-    "client": "node src/client.ts",
+    "demo": "node src/main.ts",
+    "demo:old-client": "node src/main.ts old-client",
+    "demo:old-server": "node src/main.ts old-server",
+    "demo:unrepresentable": "node src/main.ts unrepresentable",
     "example:storage": "node examples/storage.ts",
+    "example:rpc": "node examples/rpc.ts",
+    "example:cluster": "node examples/cluster.ts",
     "check": "tsc --noEmit",
     "test": "pnpm check && node --test test/*.test.ts",
-    "test:schema": "node --test test/Schema.test.ts",
     "test:http": "node --test test/Http.test.ts",
-    "test:rpc": "node --test test/Rpc.test.ts",
-    "test:cluster": "node --test test/Cluster.test.ts",
+    "test:schema": "node --test test/Schema.test.ts",
     "build:snapshot": "node scripts/build-snapshot.mjs",
     "verify:snapshot": "node scripts/verify-snapshot.mjs"
   },
